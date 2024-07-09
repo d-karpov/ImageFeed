@@ -62,10 +62,10 @@
 		D31398F02C3870E40056A6F7 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
-				D35A50642C3D79DA00A457E7 /* Extensions */,
 				D31398F12C3870E40056A6F7 /* AppDelegate.swift */,
 				D31398F32C3870E40056A6F7 /* SceneDelegate.swift */,
 				D31399092C38AA3D0056A6F7 /* ImagesList */,
+				D35A50642C3D79DA00A457E7 /* Extensions */,
 				D313990A2C38ABFD0056A6F7 /* Resources */,
 			);
 			path = ImageFeed;
