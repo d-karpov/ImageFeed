@@ -28,8 +28,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="145"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="TyX-dr-hmi" userLabel="Image">
-                                                    <rect key="frame" x="16" y="0.0" width="361" height="145"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="TyX-dr-hmi" userLabel="Cell Image">
+                                                    <rect key="frame" x="16" y="4" width="361" height="137"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
@@ -38,7 +38,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xyd-4d-xpG" userLabel="LikeButton">
-                                                    <rect key="frame" x="333" y="0.0" width="44" height="44"/>
+                                                    <rect key="frame" x="333" y="4" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="9Cr-QU-EEH"/>
                                                         <constraint firstAttribute="height" constant="44" id="Mjo-2K-3PE"/>
@@ -46,12 +46,10 @@
                                                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="Like Image"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="ActiveLike">
-                                                        <color key="baseForegroundColor" name="YP Gray"/>
-                                                    </buttonConfiguration>
+                                                    <buttonConfiguration key="configuration" style="plain" image="ActiveLike"/>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JW7-dk-C3V" userLabel="GradientView">
-                                                    <rect key="frame" x="16" y="115" width="361" height="30"/>
+                                                    <rect key="frame" x="16" y="111" width="361" height="30"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9 июля 2024" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3J-yJ-vew" userLabel="DateLabel">
                                                             <rect key="frame" x="8" y="4" width="79.666666666666671" height="18"/>
@@ -75,16 +73,20 @@
                                                 <constraint firstItem="JW7-dk-C3V" firstAttribute="trailing" secondItem="TyX-dr-hmi" secondAttribute="trailing" id="AIO-2b-tfG"/>
                                                 <constraint firstItem="TyX-dr-hmi" firstAttribute="trailing" secondItem="igY-DZ-diq" secondAttribute="trailing" constant="-16" id="LXr-J8-M2x"/>
                                                 <constraint firstItem="TyX-dr-hmi" firstAttribute="leading" secondItem="igY-DZ-diq" secondAttribute="leading" constant="16" id="Py0-9G-omc"/>
-                                                <constraint firstItem="TyX-dr-hmi" firstAttribute="top" secondItem="igY-DZ-diq" secondAttribute="top" id="R9t-cx-42b"/>
+                                                <constraint firstItem="TyX-dr-hmi" firstAttribute="top" secondItem="igY-DZ-diq" secondAttribute="top" constant="4" id="R9t-cx-42b"/>
                                                 <constraint firstItem="JW7-dk-C3V" firstAttribute="bottom" secondItem="TyX-dr-hmi" secondAttribute="bottom" id="aPK-9j-VAg"/>
-                                                <constraint firstItem="TyX-dr-hmi" firstAttribute="bottom" secondItem="igY-DZ-diq" secondAttribute="bottom" id="diu-dS-Isu"/>
+                                                <constraint firstItem="TyX-dr-hmi" firstAttribute="bottom" secondItem="igY-DZ-diq" secondAttribute="bottom" constant="-4" id="diu-dS-Isu"/>
                                                 <constraint firstItem="JW7-dk-C3V" firstAttribute="leading" secondItem="TyX-dr-hmi" secondAttribute="leading" id="eM0-41-wjv"/>
                                                 <constraint firstItem="xyd-4d-xpG" firstAttribute="trailing" secondItem="TyX-dr-hmi" secondAttribute="trailing" id="eWl-jv-M40"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
+                                            <outlet property="cellImage" destination="TyX-dr-hmi" id="deq-9P-3dc"/>
+                                            <outlet property="dateLabel" destination="d3J-yJ-vew" id="NmE-nt-kGW"/>
                                             <outlet property="gradientView" destination="JW7-dk-C3V" id="7VV-vp-pFC"/>
+                                            <outlet property="imageView" destination="TyX-dr-hmi" id="iwf-xn-Bbe"/>
+                                            <outlet property="likeButton" destination="xyd-4d-xpG" id="7kQ-UR-1bS"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -118,9 +120,6 @@
         <image name="Like Image" width="42" height="42"/>
         <namedColor name="YP Black ">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP Gray">
-            <color red="0.68235294117647061" green="0.68627450980392157" blue="0.70588235294117652" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
