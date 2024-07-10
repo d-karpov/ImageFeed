@@ -9,6 +9,10 @@ import Foundation
 
 extension Date {
 	var dateNoTimeString: String {
-		DateFormatter.localizedString(from: self, dateStyle: .long, timeStyle: .none)
+		let formatter = DateFormatter()
+		formatter.locale = Locale(identifier: "ru_RU")
+		formatter.dateStyle = .long
+		formatter.timeStyle = .none
+		return formatter.string(from: self)
 	}
 }
