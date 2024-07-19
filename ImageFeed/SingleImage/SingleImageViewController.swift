@@ -8,6 +8,11 @@
 import UIKit
 
 final class SingleImageViewController: UIViewController {
+	//MARK: - IBOutlets
+	@IBOutlet private weak var imageView: UIImageView!
+	@IBOutlet weak var scrollView: UIScrollView!
+	
+	//MARK: - Public variables
 	var image: UIImage? {
 		didSet {
 			if let image = image, isViewLoaded {
@@ -17,11 +22,10 @@ final class SingleImageViewController: UIViewController {
 			}
 		}
 	}
+	//MARK: - Private Variables
+	private var basicScale: CGFloat = 0
 	
-	
-	@IBOutlet private weak var imageView: UIImageView!
-	@IBOutlet weak var scrollView: UIScrollView!
-	
+	//MARK: -Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		scrollView.minimumZoomScale = 0.1
@@ -32,28 +36,42 @@ final class SingleImageViewController: UIViewController {
 			imageView.frame.size = image.size
 			rescaleAndCenterImage(image: image)
 		}
+		addDoubleTapGesture()
 	}
 	
+	//MARK: - Private Methods
 	private func rescaleAndCenterImage(image: UIImage) {
 		let minZoomScale = scrollView.minimumZoomScale
 		let maxZoomScale = scrollView.maximumZoomScale
-		view.layoutIfNeeded()
 		let visibleRectSize = scrollView.bounds.size
-		print(visibleRectSize)
 		let imageSize = image.size
 		let hScale = visibleRectSize.width/imageSize.width
 		let vScale = visibleRectSize.height/imageSize.height
-		let scale = min(maxZoomScale, max(minZoomScale, min(hScale, vScale)))
-		scrollView.setZoomScale(scale, animated: false)
+		basicScale = min(maxZoomScale, max(minZoomScale, min(hScale, vScale)))
+		scrollView.setZoomScale(basicScale, animated: false)
 		scrollView.layoutIfNeeded()
 		let newContentSize = scrollView.contentSize
 		let x = (newContentSize.width - visibleRectSize.width)/2
 		let y = (newContentSize.height - visibleRectSize.height)/2
 		scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
-		print(scrollView.contentInset)
-		
 	}
-
+	
+	private func addDoubleTapGesture() {
+		let doubleTabGesture = UITapGestureRecognizer(target: self, action: #selector(quickZoom))
+		doubleTabGesture.numberOfTapsRequired = 2
+		scrollView.addGestureRecognizer(doubleTabGesture)
+	}
+	
+	@objc private func quickZoom() {
+		if scrollView.zoomScale > basicScale {
+			scrollView.setZoomScale(basicScale, animated: true)
+		} else {
+			scrollView.setZoomScale(scrollView.maximumZoomScale, animated: true)
+		}
+		scrollView.layoutIfNeeded()
+	}
+	
+	//MARK: - IBActions
 	@IBAction private func didTapShareButton() {
 		guard let image = image else { return }
 		let activityView = UIActivityViewController(activityItems: [image], applicationActivities: .none)
@@ -64,9 +82,15 @@ final class SingleImageViewController: UIViewController {
 		dismiss(animated: true)
 	}
 }
-
+//MARK: - ScrollView Delegate
 extension SingleImageViewController: UIScrollViewDelegate {
 	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
 		imageView
+	}
+	
+	func scrollViewDidZoom(_ scrollView: UIScrollView) {
+		let xOffset = max((scrollView.bounds.width - scrollView.contentSize.width)*0.5, 0)
+		let yOffset = max((scrollView.bounds.height - scrollView.contentSize.height)*0.5, 0)
+		scrollView.contentInset = UIEdgeInsets(top: yOffset, left: xOffset, bottom: yOffset, right: xOffset)
 	}
 }

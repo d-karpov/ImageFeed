@@ -16,6 +16,8 @@
 		D31399082C38A9CA0056A6F7 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31399072C38A9CA0056A6F7 /* ImagesListCell.swift */; };
 		D35A50662C3D79FA00A457E7 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35A50652C3D79FA00A457E7 /* Array+Extensions.swift */; };
 		D35A50682C3D7FF000A457E7 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35A50672C3D7FF000A457E7 /* Date+Extensions.swift */; };
+		D3BD2C3F2C4ABA4A006880B7 /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BD2C3E2C4ABA4A006880B7 /* Sizes.swift */; };
+		D3BD2C422C4ABA77006880B7 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BD2C412C4ABA77006880B7 /* Fonts.swift */; };
 		D3CE9D1E2C3ECD0D00FA98A0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CE9D1D2C3ECD0C00FA98A0 /* ProfileViewController.swift */; };
 		D3E7CB682C4299EB007A27D3 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E7CB672C4299EB007A27D3 /* SingleImageViewController.swift */; };
 /* End PBXBuildFile section */
@@ -32,6 +34,8 @@
 		D31399072C38A9CA0056A6F7 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		D35A50652C3D79FA00A457E7 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		D35A50672C3D7FF000A457E7 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		D3BD2C3E2C4ABA4A006880B7 /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
+		D3BD2C412C4ABA77006880B7 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		D3CE9D1D2C3ECD0C00FA98A0 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D3E7CB672C4299EB007A27D3 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,11 +70,13 @@
 		D31398F02C3870E40056A6F7 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
-				D3CE9D1C2C3ECCDF00FA98A0 /* Profile */,
+				D3BD2C3D2C4ABA38006880B7 /* Theme */,
 				D31398F12C3870E40056A6F7 /* AppDelegate.swift */,
 				D31398F32C3870E40056A6F7 /* SceneDelegate.swift */,
 				D31398F72C3870E40056A6F7 /* Main.storyboard */,
 				D31399092C38AA3D0056A6F7 /* ImagesList */,
+				D3BD2C3C2C4AAA7C006880B7 /* SingleImage */,
+				D3CE9D1C2C3ECCDF00FA98A0 /* Profile */,
 				D35A50642C3D79DA00A457E7 /* Extensions */,
 				D313990A2C38ABFD0056A6F7 /* Resources */,
 			);
@@ -82,7 +88,6 @@
 			children = (
 				D31399052C38A2C30056A6F7 /* ImagesListViewController.swift */,
 				D31399072C38A9CA0056A6F7 /* ImagesListCell.swift */,
-				D3E7CB672C4299EB007A27D3 /* SingleImageViewController.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -104,6 +109,23 @@
 				D35A50672C3D7FF000A457E7 /* Date+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D3BD2C3C2C4AAA7C006880B7 /* SingleImage */ = {
+			isa = PBXGroup;
+			children = (
+				D3E7CB672C4299EB007A27D3 /* SingleImageViewController.swift */,
+			);
+			path = SingleImage;
+			sourceTree = "<group>";
+		};
+		D3BD2C3D2C4ABA38006880B7 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				D3BD2C3E2C4ABA4A006880B7 /* Sizes.swift */,
+				D3BD2C412C4ABA77006880B7 /* Fonts.swift */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 		D3CE9D1C2C3ECCDF00FA98A0 /* Profile */ = {
@@ -188,8 +210,10 @@
 				D31399062C38A2C30056A6F7 /* ImagesListViewController.swift in Sources */,
 				D31399082C38A9CA0056A6F7 /* ImagesListCell.swift in Sources */,
 				D31398F22C3870E40056A6F7 /* AppDelegate.swift in Sources */,
+				D3BD2C3F2C4ABA4A006880B7 /* Sizes.swift in Sources */,
 				D31398F42C3870E40056A6F7 /* SceneDelegate.swift in Sources */,
 				D3CE9D1E2C3ECD0D00FA98A0 /* ProfileViewController.swift in Sources */,
+				D3BD2C422C4ABA77006880B7 /* Fonts.swift in Sources */,
 				D35A50662C3D79FA00A457E7 /* Array+Extensions.swift in Sources */,
 				D3E7CB682C4299EB007A27D3 /* SingleImageViewController.swift in Sources */,
 				D35A50682C3D7FF000A457E7 /* Date+Extensions.swift in Sources */,
