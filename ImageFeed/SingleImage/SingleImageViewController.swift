@@ -50,10 +50,6 @@ final class SingleImageViewController: UIViewController {
 		basicScale = min(maxZoomScale, max(minZoomScale, min(hScale, vScale)))
 		scrollView.setZoomScale(basicScale, animated: false)
 		scrollView.layoutIfNeeded()
-		let newContentSize = scrollView.contentSize
-		let x = (newContentSize.width - visibleRectSize.width)/2
-		let y = (newContentSize.height - visibleRectSize.height)/2
-		scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
 	}
 	
 	private func addDoubleTapGesture() {
