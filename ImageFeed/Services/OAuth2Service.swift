@@ -44,14 +44,14 @@ final class OAuth2Service {
 	}
 	
 	private func getTokenURLRequest(code: String) -> URLRequest? {
-		guard var urlComponents = URLComponents(string: Constants.tokenBaseURLString)else { return nil }
+		guard var urlComponents = URLComponents(string: Constants.Token.baseURLString) else { return nil }
 		
 		urlComponents.queryItems = [
-			URLQueryItem(name: "client_id", value: Constants.accessKey),
-			URLQueryItem(name: "client_secret", value: Constants.secretKey),
-			URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+			URLQueryItem(name: "client_id", value: Constants.API.accessKey),
+			URLQueryItem(name: "client_secret", value: Constants.API.secretKey),
+			URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
 			URLQueryItem(name: "code", value: code),
-			URLQueryItem(name: "grant_type", value: Constants.grantType)
+			URLQueryItem(name: "grant_type", value: Constants.Token.grantType)
 		]
 		
 		guard let url = urlComponents.url else { return nil }
