@@ -12,18 +12,19 @@ enum Constants {
 		static let accessKey: String = "ejqijlQzts9kTelhZ9TMCa1zIXl4SHlqllhflccFeUk"
 		static let secretKey: String = "jJLxC3Rc4Qg_mt-fTucq66LpBHwH5uSrUcl5_de39t0"
 		static let redirectURI: String = "urn:ietf:wg:oauth:2.0:oob"
-		static let accessScope: String = "public"
+		static let accessScope: String = "public+read_user"
 	}
 	
 	enum Token {
 		static let grantType: String = "authorization_code"
 		static let storageKey: String = "token"
 		static let baseURLString: String =  "https://unsplash.com/oauth/token"
+		static let requestHeader: String = "Authorization"
 	}
 	
 	enum URLs {
 		static let authorizeURLString: String = "https://unsplash.com/oauth/authorize"
-		static let defaultBaseURL: URL? = .init(string: "https://api.unsplash.com/")
+		static let baseURLString: String = "https://api.unsplash.com/"
 	}
 	
 	enum Segues {
@@ -35,5 +36,9 @@ enum Constants {
 	enum Storyboards {
 		static let tabBar: String = "TabBarViewController"
 		static let main: String = "Main"
+	}
+	
+	enum APIPaths {
+		static let baseUser: String = "me"
 	}
 }

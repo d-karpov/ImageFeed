@@ -9,12 +9,13 @@ import UIKit
 
 final class SplashViewController: UIViewController {
 	
-	private let storage = OAuth2TokenStorageService.shared
+	private let storage: OAuth2TokenStorageService = .shared
+	private let profileService: ProfileService = .shared
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		if storage.token != nil {
-			showTabBarViewController()
+			fetchProfile()
 		} else {
 			performSegue(withIdentifier: Constants.Segues.authScene, sender: nil)
 		}
@@ -50,12 +51,29 @@ final class SplashViewController: UIViewController {
 		window.rootViewController = UIStoryboard(name: Constants.Storyboards.main, bundle: .main)
 			.instantiateViewController(withIdentifier: Constants.Storyboards.tabBar)
 	}
+	
+	private func fetchProfile() {
+		UIBlockingProgressHUD.show()
+		if let token = storage.token {
+			profileService.fetchProfile(token: token) { [weak self] result in
+				guard let self else {
+					preconditionFailure("No SplashViewController")
+				}
+				UIBlockingProgressHUD.dismiss()
+				switch result {
+				case .success(_):
+					self.showTabBarViewController()
+				case .failure(let error):
+					print(error.localizedDescription)
+				}
+			}
+		}
+	}
 }
 
 //MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
 	func didAuthenticate(_ viewController: AuthViewController) {
 		viewController.dismiss(animated: true)
-		showTabBarViewController()
 	}
 }

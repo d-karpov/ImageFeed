@@ -7,30 +7,47 @@
 
 import Foundation
 
-enum DecoderError: Error, LocalizedError {
-	case decodingError(Error)
+enum OAuth2ServiceError: Error, LocalizedError {
+	case invalidRequest
 	
 	var errorDescription: String? {
 		switch self {
-		case .decodingError(let error):
-			return "Decoding error - \(error)"
+		case .invalidRequest: return "Invalid or doubled request from OAuth2Service"
 		}
 	}
 }
 
 final class OAuth2Service {
 	static let shared = OAuth2Service()
-	private init() { }
+	private var task: URLSessionTask?
+	private var lastCode: String?
+	private let decoder = DecodeService.shared
+	
+	private init() {}
 	
 	func fetchOAuthToken(code: String, completion: @escaping(_ result: Result<String, Error>) -> Void) {
-		guard let request = getTokenURLRequest(code: code) else { return }
-		let dataTask = URLSession.shared.data(for: request) { result in
+		assert(Thread.isMainThread, "\(#function) called not in main thread")
+		guard 
+			let request = getTokenURLRequest(code: code),
+			lastCode != code
+		else {
+			completion(.failure(OAuth2ServiceError.invalidRequest))
+			return
+		}
+		
+		task?.cancel()
+		lastCode = code
+		
+		let task = URLSession.shared.data(for: request) { [weak self] result in
+			guard let self else {
+				preconditionFailure("No OAuthService initialized")
+			}
+			self.task = nil
+			self.lastCode = nil
 			switch result {
 			case .success(let data):
-				let decoder = JSONDecoder()
-				decoder.keyDecodingStrategy = .convertFromSnakeCase
 				do {
-					let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+					let responseBody = try self.decoder.decode(OAuthTokenResponseBody.self, from: data)
 					completion(.success(responseBody.accessToken))
 				} catch {
 					completion(.failure(DecoderError.decodingError(error)))
@@ -40,7 +57,8 @@ final class OAuth2Service {
 			}
 		}
 		
-		dataTask.resume()
+		self.task = task
+		task.resume()
 	}
 	
 	private func getTokenURLRequest(code: String) -> URLRequest? {

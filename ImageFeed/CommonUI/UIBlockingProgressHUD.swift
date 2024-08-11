@@ -19,7 +19,9 @@ final class UIBlockingProgressHUD {
 	
 	static func show() {
 		window?.isUserInteractionEnabled = false
-		ProgressHUD.show()
+		ProgressHUD.colorAnimation = .ypBlack
+		ProgressHUD.animationType = .squareCircuitSnake
+		ProgressHUD.animate()
 	}
 	
 	static func dismiss() {
