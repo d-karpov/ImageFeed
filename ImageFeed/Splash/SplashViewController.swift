@@ -62,14 +62,18 @@ final class SplashViewController: UIViewController {
 			UIBlockingProgressHUD.dismiss()
 			switch result {
 			case .success(let profile):
-				self.profileImageService.fetchProfileImage(userName: profile.username) { result in
-					switch result {
-					case .success(let imageURLString): print(imageURLString)
-					case .failure(let error):
-						print(error.localizedDescription, #function, #line)
-					}
-				}
+				self.fetchProfileImage(for: profile.username)
 				self.showTabBarViewController()
+			case .failure(let error):
+				print(error.localizedDescription, #function, #line)
+			}
+		}
+	}
+	
+	private func fetchProfileImage(for userName: String) {
+		profileImageService.fetchProfileImage(userName: userName) { result in
+			switch result {
+			case .success(let imageURLString): print(imageURLString)
 			case .failure(let error):
 				print(error.localizedDescription, #function, #line)
 			}

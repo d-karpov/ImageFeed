@@ -42,4 +42,8 @@ enum Constants {
 		static let userData: String = "me"
 		static let userPublicData: String = "users/"
 	}
+	
+	enum imageSizes {
+		static let profileImage: String = "small"
+	}
 }

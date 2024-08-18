@@ -50,7 +50,9 @@ final class ProfileImageService {
 			case .success(let data):
 				do {
 					let responseBody = try self.decoder.decode(UserResponseBody.self, from: data)
-					guard let profileImageURLString = responseBody.profileImage["small"] else {
+					guard 
+						let profileImageURLString = responseBody.profileImage[Constants.imageSizes.profileImage]
+					else {
 						return completion(.failure(ProfileImageServiceError.noImageUrl))
 					}
 					self.profileImageURLString = profileImageURLString
