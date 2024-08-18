@@ -11,6 +11,8 @@ import UIKit
 final class ProfileViewController: UIViewController {
 	//MARK: - Private variables
 	private let profileService: ProfileService = .shared
+	private let profileImageService: ProfileImageService = .shared
+	private var profileImageServiceObserver: NSObjectProtocol?
 	
 	private lazy var profileImage: UIImageView = {
 		let imageView = UIImageView()
@@ -59,6 +61,17 @@ final class ProfileViewController: UIViewController {
 		setUpSubViews()
 		setLayoutSubviews()
 		updateProfileDetails(profile: profileService.profile)
+		
+		profileImageServiceObserver = NotificationCenter.default.addObserver(
+			forName: ProfileImageService.didChangeNotification,
+			object: nil,
+			queue: .main,
+			using: { [weak self] _ in
+				guard let self else { return }
+				self.updateAvatar()
+			}
+		)
+		updateAvatar()
 	}
 	
 	//MARK: - Private methods
@@ -69,6 +82,7 @@ final class ProfileViewController: UIViewController {
 			self.infoLabel.text = profile.bio
 		}
 	}
+	
 	private func setUpSubViews() {
 		[
 			profileImage,
@@ -89,6 +103,7 @@ final class ProfileViewController: UIViewController {
 		setUpConstraintsInfoLabel()
 	}
 	
+	//MARK: Constraints Methods
 	private func setUpConstraintsProfileImage() {
 		NSLayoutConstraint.activate(
 			[
@@ -146,5 +161,16 @@ final class ProfileViewController: UIViewController {
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.text = text
 		return label
+	}
+	
+	private func updateAvatar() {
+		guard
+			let profileImageURLString = profileImageService.profileImageURLString,
+			let url = URL(string: profileImageURLString)
+		else {
+			print(ProfileImageServiceError.noImageUrl.localizedDescription)
+			return
+		}
+		
 	}
 }

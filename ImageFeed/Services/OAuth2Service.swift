@@ -22,13 +22,14 @@ final class OAuth2Service {
 	private var task: URLSessionTask?
 	private var lastCode: String?
 	private let decoder = DecodeService.shared
+	private let requestBuilder = RequestsBuilderService.shared
 	
 	private init() {}
 	
 	func fetchOAuthToken(code: String, completion: @escaping(_ result: Result<String, Error>) -> Void) {
 		assert(Thread.isMainThread, "\(#function) called not in main thread")
 		guard 
-			let request = getTokenURLRequest(code: code),
+			let request = requestBuilder.madeRequest(for: .token(code)),
 			lastCode != code
 		else {
 			completion(.failure(OAuth2ServiceError.invalidRequest))
@@ -59,24 +60,5 @@ final class OAuth2Service {
 		
 		self.task = task
 		task.resume()
-	}
-	
-	private func getTokenURLRequest(code: String) -> URLRequest? {
-		guard var urlComponents = URLComponents(string: Constants.Token.baseURLString) else { return nil }
-		
-		urlComponents.queryItems = [
-			URLQueryItem(name: "client_id", value: Constants.API.accessKey),
-			URLQueryItem(name: "client_secret", value: Constants.API.secretKey),
-			URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
-			URLQueryItem(name: "code", value: code),
-			URLQueryItem(name: "grant_type", value: Constants.Token.grantType)
-		]
-		
-		guard let url = urlComponents.url else { return nil }
-		
-		var request = URLRequest(url: url)
-		request.httpMethod = "POST"
-		
-		return request
 	}
 }

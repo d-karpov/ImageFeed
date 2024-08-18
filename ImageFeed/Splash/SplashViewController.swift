@@ -11,6 +11,7 @@ final class SplashViewController: UIViewController {
 	
 	private let storage: OAuth2TokenStorageService = .shared
 	private let profileService: ProfileService = .shared
+	private let profileImageService: ProfileImageService = .shared
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
@@ -54,18 +55,23 @@ final class SplashViewController: UIViewController {
 	
 	private func fetchProfile() {
 		UIBlockingProgressHUD.show()
-		if let token = storage.token {
-			profileService.fetchProfile(token: token) { [weak self] result in
-				guard let self else {
-					preconditionFailure("No SplashViewController")
+		profileService.fetchProfile() { [weak self] result in
+			guard let self else {
+				preconditionFailure("No SplashViewController")
+			}
+			UIBlockingProgressHUD.dismiss()
+			switch result {
+			case .success(let profile):
+				self.profileImageService.fetchProfileImage(userName: profile.username) { result in
+					switch result {
+					case .success(let imageURLString): print(imageURLString)
+					case .failure(let error):
+						print(error.localizedDescription, #function, #line)
+					}
 				}
-				UIBlockingProgressHUD.dismiss()
-				switch result {
-				case .success(_):
-					self.showTabBarViewController()
-				case .failure(let error):
-					print(error.localizedDescription)
-				}
+				self.showTabBarViewController()
+			case .failure(let error):
+				print(error.localizedDescription, #function, #line)
 			}
 		}
 	}

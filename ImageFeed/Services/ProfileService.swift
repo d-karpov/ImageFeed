@@ -21,14 +21,15 @@ final class ProfileService {
 	static let shared: ProfileService = .init()
 	private var task: URLSessionTask?
 	private let decoder: DecodeService = .shared
+	private let requestBuilder: RequestsBuilderService = .shared
 	private(set) var profile: Profile?
 	
 	private init() {}
 	
-	func fetchProfile(token: String, completion: @escaping(Result<Profile, Error>) -> Void) {
+	func fetchProfile(completion: @escaping(Result<Profile, Error>) -> Void) {
 		assert(Thread.isMainThread, "\(#function) called not in main thread")
 		guard 
-			let request = getBaseUserInformationRequest(token: token),
+			let request = requestBuilder.madeRequest(for: .userBaseData),
 			task == nil
 		else {
 			completion(.failure(ProfileServiceError.invalidRequest))
@@ -63,12 +64,5 @@ final class ProfileService {
 		
 		self.task = task
 		task.resume()
-	}
-	
-	private func getBaseUserInformationRequest(token: String) -> URLRequest? {
-		guard let url = URL(string: Constants.URLs.baseURLString + Constants.APIPaths.baseUser) else { return nil }
-		var request = URLRequest(url: url)
-		request.setValue("Bearer \(token)", forHTTPHeaderField: Constants.Token.requestHeader)
-		return request
 	}
 }

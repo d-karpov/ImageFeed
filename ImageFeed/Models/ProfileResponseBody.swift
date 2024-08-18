@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct ProfileResponseBody: Codable {
+struct ProfileResponseBody: Decodable {
 	let username: String
 	let firstName: String
 	let lastName: String?

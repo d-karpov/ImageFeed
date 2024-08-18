@@ -39,6 +39,7 @@ enum Constants {
 	}
 	
 	enum APIPaths {
-		static let baseUser: String = "me"
+		static let userData: String = "me"
+		static let userPublicData: String = "users/"
 	}
 }
