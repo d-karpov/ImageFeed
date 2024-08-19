@@ -67,7 +67,17 @@ extension AuthViewController: WebViewViewControllerDelegate {
 				self.oAuth2Storage.token = token
 				delegate.didAuthenticate(self)
 			case .failure(let error):
-				print(error.localizedDescription)
+				AlertPresenter.show(
+					with: Alert(
+						title: Constants.AlertTexts.title,
+						message: Constants.AlertTexts.authMessage,
+						buttonText: Constants.AlertTexts.buttonText,
+						action: {
+							print(error.localizedDescription)
+						}
+					),
+					at: self
+				)
 			}
 		}
 	}

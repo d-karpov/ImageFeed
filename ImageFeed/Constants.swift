@@ -43,7 +43,13 @@ enum Constants {
 		static let userPublicData: String = "users/"
 	}
 	
-	enum imageSizes {
+	enum ImageSizes {
 		static let profileImage: String = "small"
+	}
+	
+	enum AlertTexts {
+		static let title: String = "Что-то пошло не так("
+		static let authMessage: String = "Не удалось войти в систему"
+		static let buttonText: String = "Ок"
 	}
 }

@@ -47,7 +47,7 @@ final class ProfileImageService {
 				switch result {
 				case .success(let responseBody):
 					guard
-						let profileImageURLString = responseBody.profileImage[Constants.imageSizes.profileImage]
+						let profileImageURLString = responseBody.profileImage[Constants.ImageSizes.profileImage]
 					else {
 						return completion(.failure(ProfileImageServiceError.noImageUrl))
 					}
