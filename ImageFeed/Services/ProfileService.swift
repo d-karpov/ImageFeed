@@ -20,7 +20,6 @@ enum ProfileServiceError: Error, LocalizedError {
 final class ProfileService {
 	static let shared: ProfileService = .init()
 	private var task: URLSessionTask?
-	private let decoder: DecodeService = .shared
 	private let requestBuilder: RequestsBuilderService = .shared
 	private(set) var profile: Profile?
 	
@@ -28,7 +27,7 @@ final class ProfileService {
 	
 	func fetchProfile(completion: @escaping(Result<Profile, Error>) -> Void) {
 		assert(Thread.isMainThread, "\(#function) called not in main thread")
-		guard 
+		guard
 			let request = requestBuilder.madeRequest(for: .userBaseData),
 			task == nil
 		else {
@@ -38,15 +37,12 @@ final class ProfileService {
 		
 		task?.cancel()
 		
-		let task = URLSession.shared.data(for: request) { [weak self] result in
-			guard let self else {
-				preconditionFailure("No ProfileService initialized")
-			}
-			self.task = nil
-			switch result {
-			case .success(let data):
-				do {
-					let responseBody = try self.decoder.decode(ProfileResponseBody.self, from: data)
+		let task = URLSession.shared
+			.objectTask(for: request) { [weak self] (result: Result<ProfileResponseBody, Error>) in
+				guard let self else { preconditionFailure("No ProfileService initialized") }
+				self.task = nil
+				switch result {
+				case .success(let responseBody):
 					let profile = Profile(
 						username: responseBody.username,
 						name: [responseBody.firstName, responseBody.lastName ?? ""].joined(separator: " "),
@@ -54,13 +50,10 @@ final class ProfileService {
 					)
 					self.profile = profile
 					completion(.success(profile))
-				} catch {
-					completion(.failure(DecoderError.decodingError(error)))
+				case .failure(let error):
+					completion(.failure(error))
 				}
-			case .failure(let error):
-				completion(.failure(error))
 			}
-		}
 		
 		self.task = task
 		task.resume()

@@ -23,7 +23,6 @@ final class ProfileImageService {
 	static let shared: ProfileImageService = .init()
 	static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
 	private var task: URLSessionTask?
-	private let decoder: DecodeService = .shared
 	private let requestBuilder: RequestsBuilderService = .shared
 	private(set) var profileImageURLString: String?
 	
@@ -35,22 +34,19 @@ final class ProfileImageService {
 			let request = requestBuilder.madeRequest(for: .userImage(userName)),
 			task == nil
 		else {
-			completion(.failure(ProfileServiceError.invalidRequest))
+			completion(.failure(ProfileImageServiceError.invalidRequest))
 			return
 		}
 		
 		task?.cancel()
 		
-		let task = URLSession.shared.data(for: request) { [weak self] result in
-			guard let self else {
-				preconditionFailure("No ProfileImageService initialized")
-			}
-			self.task = nil
-			switch result {
-			case .success(let data):
-				do {
-					let responseBody = try self.decoder.decode(UserResponseBody.self, from: data)
-					guard 
+		let task = URLSession.shared
+			.objectTask(for: request) { [weak self] (result: Result<UserResponseBody, Error>) in
+				guard let self else { preconditionFailure("No ProfileImageService initialized") }
+				self.task = nil
+				switch result {
+				case .success(let responseBody):
+					guard
 						let profileImageURLString = responseBody.profileImage[Constants.imageSizes.profileImage]
 					else {
 						return completion(.failure(ProfileImageServiceError.noImageUrl))
@@ -62,13 +58,10 @@ final class ProfileImageService {
 						object: self,
 						userInfo: nil
 					)
-				} catch {
-					completion(.failure(DecoderError.decodingError(error)))
+				case .failure(let error):
+					completion(.failure(error))
 				}
-			case .failure(let error):
-				completion(.failure(error))
 			}
-		}
 		
 		self.task = task
 		task.resume()

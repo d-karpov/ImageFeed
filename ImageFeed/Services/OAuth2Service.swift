@@ -21,7 +21,6 @@ final class OAuth2Service {
 	static let shared = OAuth2Service()
 	private var task: URLSessionTask?
 	private var lastCode: String?
-	private let decoder = DecodeService.shared
 	private let requestBuilder = RequestsBuilderService.shared
 	
 	private init() {}
@@ -38,25 +37,18 @@ final class OAuth2Service {
 		
 		task?.cancel()
 		lastCode = code
-		
-		let task = URLSession.shared.data(for: request) { [weak self] result in
-			guard let self else {
-				preconditionFailure("No OAuthService initialized")
-			}
-			self.task = nil
-			self.lastCode = nil
-			switch result {
-			case .success(let data):
-				do {
-					let responseBody = try self.decoder.decode(OAuthTokenResponseBody.self, from: data)
+		let task = URLSession.shared
+			.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+				guard let self else { preconditionFailure("No OAuthService initialized") }
+				self.task = nil
+				self.lastCode = nil
+				switch result {
+				case .success(let responseBody):
 					completion(.success(responseBody.accessToken))
-				} catch {
-					completion(.failure(DecoderError.decodingError(error)))
+				case .failure(let error):
+					completion(.failure(error))
 				}
-			case .failure(let error):
-				completion(.failure(error))
 			}
-		}
 		
 		self.task = task
 		task.resume()

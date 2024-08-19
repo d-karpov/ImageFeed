@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		D30F135B2C68FAE300FBE04A /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F135A2C68FAE300FBE04A /* ProfileService.swift */; };
 		D30F135D2C68FB8C00FBE04A /* ProfileResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F135C2C68FB8C00FBE04A /* ProfileResponseBody.swift */; };
-		D30F135F2C68FEC300FBE04A /* DecodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F135E2C68FEC300FBE04A /* DecodeService.swift */; };
 		D30F13622C69132300FBE04A /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = D30F13612C69132300FBE04A /* ProgressHUD */; };
 		D30F13642C6927A300FBE04A /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F13632C6927A300FBE04A /* Profile.swift */; };
 		D30F13672C695DC000FBE04A /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F13662C695DC000FBE04A /* ProfileImageService.swift */; };
@@ -42,7 +41,6 @@
 /* Begin PBXFileReference section */
 		D30F135A2C68FAE300FBE04A /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		D30F135C2C68FB8C00FBE04A /* ProfileResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponseBody.swift; sourceTree = "<group>"; };
-		D30F135E2C68FEC300FBE04A /* DecodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodeService.swift; sourceTree = "<group>"; };
 		D30F13632C6927A300FBE04A /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		D30F13662C695DC000FBE04A /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		D31398EE2C3870E40056A6F7 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,7 +173,6 @@
 				D37A53582C540F1000F98CE5 /* OAuth2Service.swift */,
 				D37A53612C5425CF00F98CE5 /* OAuth2TokenStorageService.swift */,
 				D30F135A2C68FAE300FBE04A /* ProfileService.swift */,
-				D30F135E2C68FEC300FBE04A /* DecodeService.swift */,
 				D30F13662C695DC000FBE04A /* ProfileImageService.swift */,
 				D32F243F2C7237250009894E /* RequestsBuilderService.swift */,
 			);
@@ -315,7 +312,6 @@
 				D37A535D2C541C1600F98CE5 /* URLSession+Extensions.swift in Sources */,
 				D30F13672C695DC000FBE04A /* ProfileImageService.swift in Sources */,
 				D37A53602C54200700F98CE5 /* OAuthTokenResponseBody.swift in Sources */,
-				D30F135F2C68FEC300FBE04A /* DecodeService.swift in Sources */,
 				D30F135B2C68FAE300FBE04A /* ProfileService.swift in Sources */,
 				D39008872C68DF3D0000E6DB /* UIBlockingProgressHUD.swift in Sources */,
 				D37A53542C52E34F00F98CE5 /* AuthViewController.swift in Sources */,

@@ -24,8 +24,33 @@ enum NetworkError: Error, LocalizedError {
 	}
 }
 
+enum DecoderError: Error, LocalizedError {
+	case decodingError(Error)
+	
+	var errorDescription: String? {
+		switch self {
+		case .decodingError(let error):
+			guard let error = error as? DecodingError else {
+				return "Error while try decode - \(error)"
+			}
+			switch error {
+			case .typeMismatch(let type, let context):
+				return "Type mismatch - used \(type) for codingPath:\n\(context.codingPath)"
+			case .valueNotFound(let value, let context):
+				return "Value - \(value) wasn't found!\nCodingPath: \(context.codingPath)"
+			case .keyNotFound(let key, let context):
+				return "Key - \(key) wasn't found!\nCodingPath: \(context.codingPath)"
+			case .dataCorrupted(let context):
+				return "Data corrupted - \(context)"
+			@unknown default:
+				return "Unknown Decoding error - \(error)"
+			}
+		}
+	}
+}
+
 extension URLSession {
-	func data(for request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask {
+	private func data(for request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask {
 		let fulfillCompletionOnTheMainThread: (Result<Data, Error>) -> Void = { result in
 			DispatchQueue.main.async {
 				completion(result)
@@ -36,7 +61,7 @@ extension URLSession {
 			if
 				let data = data,
 				let response = response,
-				let statusCode = (response as? HTTPURLResponse)?.statusCode 
+				let statusCode = (response as? HTTPURLResponse)?.statusCode
 			{
 				if 200..<300 ~= statusCode {
 					fulfillCompletionOnTheMainThread(.success(data))
@@ -50,6 +75,28 @@ extension URLSession {
 			}
 		}
 		
+		return task
+	}
+	
+	func objectTask<T: Decodable>(
+		for request: URLRequest,
+		completion: @escaping(Result<T,Error>) -> Void
+	) -> URLSessionTask {
+		let decoder = JSONDecoder()
+		decoder.keyDecodingStrategy = .convertFromSnakeCase
+		let task = data(for: request) { result in
+			switch result {
+			case .success(let data):
+				do {
+					let responseBody = try decoder.decode(T.self, from: data)
+					completion(.success(responseBody))
+				} catch {
+					completion(.failure(DecoderError.decodingError(error)))
+				}
+			case .failure(let error):
+				completion(.failure(error))
+			}
+		}
 		return task
 	}
 }

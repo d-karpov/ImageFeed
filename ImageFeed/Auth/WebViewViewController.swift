@@ -17,10 +17,12 @@ final class WebViewViewController: UIViewController {
 	@IBOutlet private weak var webView: WKWebView!
 	@IBOutlet private weak var progressView: UIProgressView!
 	
+	private let requestBuilder: RequestsBuilderService = .shared
 	private var estimatedProgressObservation: NSKeyValueObservation?
 	
 	weak var delegate: WebViewViewControllerDelegate?
 	
+	//MARK: Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		webView.navigationDelegate = self
@@ -34,7 +36,7 @@ final class WebViewViewController: UIViewController {
 		)
 		loadAuthView()
 	}
-	
+	//MARK: Private Methods
 	private func updateProgress() {
 		let status = fabs(webView.estimatedProgress - 1.0) <= 0.0001
 		progressView.setProgress( status ? 0 : Float(webView.estimatedProgress), animated: true)
@@ -42,23 +44,15 @@ final class WebViewViewController: UIViewController {
 	}
 	
 	private func loadAuthView() {
-		guard var urlComponents = URLComponents(string: Constants.URLs.authorizeURLString) else { return }
-		
-		urlComponents.queryItems = [
-			URLQueryItem(name: "client_id", value: Constants.API.accessKey),
-			URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
-			URLQueryItem(name: "response_type", value: "code"),
-			URLQueryItem(name: "scope", value: Constants.API.accessScope),
-		]
-		
-		guard let url = urlComponents.url else {
-			return
+		if let request = requestBuilder.madeRequest(for: .auth) {
+			webView.load(request)
+		} else {
+			preconditionFailure("Wrong Auth request! \(#function) line - \(#line)")
 		}
-		let request = URLRequest(url: url)
-		webView.load(request)
 	}
 }
 
+//MARK: - WKNavigationDelegate Implementation
 extension WebViewViewController: WKNavigationDelegate {
 	func webView(
 		_ webView: WKWebView,
