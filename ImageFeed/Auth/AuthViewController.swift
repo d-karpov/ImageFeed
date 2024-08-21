@@ -57,27 +57,19 @@ extension AuthViewController: WebViewViewControllerDelegate {
 	func webViewViewController(_ viewController: WebViewViewController, didAuthenticateWithCode code: String) {
 		UIBlockingProgressHUD.show()
 		viewController.navigationController?.popToRootViewController(animated: true)
+	
 		oAuth2Service.fetchOAuthToken(code: code) { [weak self] result in
+			UIBlockingProgressHUD.dismiss()
 			guard let self, let delegate = self.delegate else {
 				preconditionFailure("No more self or self.delegate exist at the moment. Caller - \(#function)")
 			}
-			UIBlockingProgressHUD.dismiss()
 			switch result {
 			case .success(let token):
 				self.oAuth2Storage.token = token
 				delegate.didAuthenticate(self)
 			case .failure(let error):
-				AlertPresenter.show(
-					with: Alert(
-						title: Constants.AlertTexts.title,
-						message: Constants.AlertTexts.authMessage,
-						buttonText: Constants.AlertTexts.buttonText,
-						action: {
-							print("[\(#fileID)]:[\(#function)] -> " + error.localizedDescription)
-						}
-					),
-					at: self
-				)
+				print("[\(#fileID)]:[\(#function)] -> " + error.localizedDescription)
+				AlertPresenter.showAuthError(at: self)
 			}
 		}
 	}

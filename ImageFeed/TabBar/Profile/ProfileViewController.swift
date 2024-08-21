@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import SwiftKeychainWrapper
 
 
 final class ProfileViewController: UIViewController {
@@ -26,6 +27,7 @@ final class ProfileViewController: UIViewController {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.setImage(UIImage(named: "Exit"), for: .normal)
+		button.addTarget(self, action: #selector(logout), for: .touchUpInside)
 		return button
 	}()
 	
@@ -53,6 +55,7 @@ final class ProfileViewController: UIViewController {
 	//MARK: - Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		view.backgroundColor = .ypBlack
 		setUpSubViews()
 		setLayoutSubviews()
 		updateProfileDetails(profile: profileService.profile)
@@ -94,6 +97,10 @@ final class ProfileViewController: UIViewController {
 			placeholder: UIImage(systemName: "person.crop.circle.fill"),
 			options: [.processor(processor)]
 		)
+	}
+	@objc
+	private func logout() {
+		KeychainWrapper.standard.removeAllKeys()
 	}
 	
 	private func setUpSubViews() {

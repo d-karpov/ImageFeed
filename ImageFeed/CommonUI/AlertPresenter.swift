@@ -19,4 +19,16 @@ struct AlertPresenter {
 		
 		view.present(alert, animated: true)
 	}
+	
+	static func showAuthError(at view: UIViewController) {
+		show(
+			with: .init(
+				title: Constants.AlertTexts.title,
+				message: Constants.AlertTexts.authMessage,
+				buttonText: Constants.AlertTexts.buttonText,
+				action: { }
+			),
+			at: view
+		)
+	}
 }

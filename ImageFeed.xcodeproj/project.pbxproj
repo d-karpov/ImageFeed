@@ -38,6 +38,7 @@
 		D3CE9D1E2C3ECD0D00FA98A0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CE9D1D2C3ECD0C00FA98A0 /* ProfileViewController.swift */; };
 		D3D397032C73A14000DC82EB /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D3D397022C73A14000DC82EB /* Kingfisher */; };
 		D3D397062C7644DD00DC82EB /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = D3D397052C7644DD00DC82EB /* SwiftKeychainWrapper */; };
+		D3D397092C764A7200DC82EB /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D397082C764A7200DC82EB /* TabBarViewController.swift */; };
 		D3D6D0412C592B8600D22204 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D0402C592B8600D22204 /* SplashViewController.swift */; };
 		D3E7CB682C4299EB007A27D3 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E7CB672C4299EB007A27D3 /* SingleImageViewController.swift */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		D3BD2C3E2C4ABA4A006880B7 /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
 		D3BD2C412C4ABA77006880B7 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		D3CE9D1D2C3ECD0C00FA98A0 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		D3D397082C764A7200DC82EB /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D3D6D0402C592B8600D22204 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		D3E7CB672C4299EB007A27D3 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,9 +128,7 @@
 				D30F13652C6952E700FBE04A /* CommonUI */,
 				D3D6D0422C592B9A00D22204 /* Splash */,
 				D37A53522C52E30C00F98CE5 /* Auth */,
-				D31399092C38AA3D0056A6F7 /* ImagesList */,
-				D3BD2C3C2C4AAA7C006880B7 /* SingleImage */,
-				D3CE9D1C2C3ECCDF00FA98A0 /* Profile */,
+				D3D397072C764A2B00DC82EB /* TabBar */,
 				D37A535E2C541FEC00F98CE5 /* Models */,
 				D37A53572C540EE100F98CE5 /* Services */,
 				D35A50642C3D79DA00A457E7 /* Extensions */,
@@ -225,6 +225,17 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		D3D397072C764A2B00DC82EB /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				D31399092C38AA3D0056A6F7 /* ImagesList */,
+				D3BD2C3C2C4AAA7C006880B7 /* SingleImage */,
+				D3CE9D1C2C3ECCDF00FA98A0 /* Profile */,
+				D3D397082C764A7200DC82EB /* TabBarViewController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
 		D3D6D0422C592B9A00D22204 /* Splash */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +329,7 @@
 				D37A53592C540F1000F98CE5 /* OAuth2Service.swift in Sources */,
 				D37A53622C5425CF00F98CE5 /* OAuth2TokenStorageService.swift in Sources */,
 				D30F13642C6927A300FBE04A /* Profile.swift in Sources */,
+				D3D397092C764A7200DC82EB /* TabBarViewController.swift in Sources */,
 				D3D6D0412C592B8600D22204 /* SplashViewController.swift in Sources */,
 				D32F24402C7237250009894E /* RequestsBuilderService.swift in Sources */,
 				D37A53512C52691500F98CE5 /* Constants.swift in Sources */,

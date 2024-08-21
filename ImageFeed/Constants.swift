@@ -29,14 +29,15 @@ enum Constants {
 	}
 	
 	enum Segues {
-		static let authScene: String = "ShowAuthScene"
 		static let webView: String = "ShowWebView"
 		static let singleImage: String = "ShowSingleImage"
 	}
 	
 	enum Storyboards {
-		static let tabBar: String = "TabBarViewController"
 		static let main: String = "Main"
+		static let tabBar: String = "TabBarViewController"
+		static let auth: String = "AuthNavigationView"
+		static let imagesList: String = "ImagesListViewController"
 	}
 	
 	enum APIPaths {
