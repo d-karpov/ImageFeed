@@ -16,6 +16,7 @@ enum Constants {
 	}
 	
 	enum Token {
+		static let key: String = "Auth token"
 		static let grantType: String = "authorization_code"
 		static let storageKey: String = "token"
 		static let baseURLString: String =  "https://unsplash.com/oauth/token"
