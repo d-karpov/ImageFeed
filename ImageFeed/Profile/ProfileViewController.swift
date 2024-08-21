@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 
 final class ProfileViewController: UIViewController {
@@ -17,13 +18,7 @@ final class ProfileViewController: UIViewController {
 	private lazy var profileImage: UIImageView = {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		if let image = UIImage(named: "Mock User") {
-			imageView.image = image
-		} else {
-			imageView.tintColor = .ypGray
-			imageView.image = UIImage(systemName: "person.crop.circle.fill")
-		}
-		imageView.layer.cornerRadius = Sizes.ProfileImage.cornerRadius
+		imageView.tintColor = .ypGray
 		return imageView
 	}()
 	
@@ -81,6 +76,24 @@ final class ProfileViewController: UIViewController {
 			self.loginLabel.text = profile.loginName
 			self.infoLabel.text = profile.bio
 		}
+	}
+	
+	private func updateAvatar() {
+		guard
+			let profileImageURLString = profileImageService.profileImageURLString,
+			let url = URL(string: profileImageURLString)
+		else {
+			print("[\(#fileID)]:[\(#function)] -> " + ProfileImageServiceError.noImageUrl.localizedDescription)
+			return
+		}
+		
+		let processor = RoundCornerImageProcessor(cornerRadius: Sizes.ProfileImage.cornerRadius, backgroundColor: .ypBlack)
+		
+		profileImage.kf.setImage(
+			with: url,
+			placeholder: UIImage(systemName: "person.crop.circle.fill"),
+			options: [.processor(processor)]
+		)
 	}
 	
 	private func setUpSubViews() {
@@ -161,16 +174,5 @@ final class ProfileViewController: UIViewController {
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.text = text
 		return label
-	}
-	
-	private func updateAvatar() {
-		guard
-			let profileImageURLString = profileImageService.profileImageURLString,
-			let url = URL(string: profileImageURLString)
-		else {
-			print(ProfileImageServiceError.noImageUrl.localizedDescription)
-			return
-		}
-		
 	}
 }

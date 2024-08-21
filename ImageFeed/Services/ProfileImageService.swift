@@ -13,8 +13,8 @@ enum ProfileImageServiceError: Error, LocalizedError {
 	
 	var errorDescription: String? {
 		switch self {
-		case .invalidRequest: return "Invalid or doubled request from ProfileImageService"
-		case .noImageUrl: return "No URL for profile image at response"
+		case .invalidRequest: return "[\(#fileID)]:[\(#function)] Invalid or doubled request from ProfileImageService"
+		case .noImageUrl: return "[\(#fileID)]:[\(#function)] No URL for profile image at response"
 		}
 	}
 }

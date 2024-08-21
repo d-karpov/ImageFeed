@@ -73,7 +73,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
 						message: Constants.AlertTexts.authMessage,
 						buttonText: Constants.AlertTexts.buttonText,
 						action: {
-							print(error.localizedDescription)
+							print("[\(#fileID)]:[\(#function)] -> " + error.localizedDescription)
 						}
 					),
 					at: self

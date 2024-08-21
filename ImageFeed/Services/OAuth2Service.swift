@@ -12,7 +12,7 @@ enum OAuth2ServiceError: Error, LocalizedError {
 	
 	var errorDescription: String? {
 		switch self {
-		case .invalidRequest: return "Invalid or doubled request from OAuth2Service"
+		case .invalidRequest: return "[\(#fileID)]:[\(#function)] ->  Invalid or doubled request"
 		}
 	}
 }

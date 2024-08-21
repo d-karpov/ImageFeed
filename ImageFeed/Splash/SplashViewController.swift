@@ -56,16 +56,16 @@ final class SplashViewController: UIViewController {
 	private func fetchProfile() {
 		UIBlockingProgressHUD.show()
 		profileService.fetchProfile() { [weak self] result in
+			UIBlockingProgressHUD.dismiss()
 			guard let self else {
 				preconditionFailure("No SplashViewController")
 			}
-			UIBlockingProgressHUD.dismiss()
 			switch result {
 			case .success(let profile):
 				self.fetchProfileImage(for: profile.username)
 				self.showTabBarViewController()
 			case .failure(let error):
-				print(error.localizedDescription, #function, #line)
+				print("[\(#fileID)]:[\(#function)] -> " + error.localizedDescription)
 			}
 		}
 	}
@@ -73,9 +73,17 @@ final class SplashViewController: UIViewController {
 	private func fetchProfileImage(for userName: String) {
 		profileImageService.fetchProfileImage(userName: userName) { result in
 			switch result {
-			case .success(let imageURLString): print(imageURLString)
+			case .success(_): return
 			case .failure(let error):
-				print(error.localizedDescription, #function, #line)
+				AlertPresenter.show(
+					with: .init(
+						title: Constants.AlertTexts.title,
+						message: error.localizedDescription,
+						buttonText: Constants.AlertTexts.buttonText,
+						action: { }
+					),
+					at: self
+				)
 			}
 		}
 	}
