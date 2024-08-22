@@ -16,6 +16,7 @@ final class SplashViewController: UIViewController {
 	private var imageView: UIImageView = {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
+		imageView.backgroundColor = .ypBlack
 		imageView.image = .splashScreen
 		imageView.contentMode = .center
 		return imageView
