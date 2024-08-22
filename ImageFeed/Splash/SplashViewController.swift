@@ -117,6 +117,5 @@ final class SplashViewController: UIViewController {
 extension SplashViewController: AuthViewControllerDelegate {
 	func didAuthenticate(_ viewController: AuthViewController) {
 		viewController.dismiss(animated: true)
-		fetchProfile()
 	}
 }
