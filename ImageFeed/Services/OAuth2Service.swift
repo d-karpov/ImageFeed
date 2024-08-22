@@ -12,7 +12,7 @@ enum OAuth2ServiceError: Error, LocalizedError {
 	
 	var errorDescription: String? {
 		switch self {
-		case .invalidRequest: return "[\(#fileID)]:[\(#function)] ->  Invalid or doubled request"
+		case .invalidRequest: return "[\(#fileID)]:[\(#function)] -> Invalid or doubled request from OAuthService"
 		}
 	}
 }
@@ -31,6 +31,8 @@ final class OAuth2Service {
 			let request = requestBuilder.madeRequest(for: .token(code)),
 			lastCode != code
 		else {
+			//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
+			print("\(OAuth2ServiceError.invalidRequest.localizedDescription)")
 			completion(.failure(OAuth2ServiceError.invalidRequest))
 			return
 		}
@@ -46,6 +48,8 @@ final class OAuth2Service {
 				case .success(let responseBody):
 					completion(.success(responseBody.accessToken))
 				case .failure(let error):
+					//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
+					print("[\(#fileID)]:[\(#function)] -> \(error.localizedDescription)")
 					completion(.failure(error))
 				}
 			}
