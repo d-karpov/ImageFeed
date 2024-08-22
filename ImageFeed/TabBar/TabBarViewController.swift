@@ -24,12 +24,4 @@ final class TabBarViewController: UITabBarController {
 		self.viewControllers = [imagesListViewController, profileViewController]
 		
 	}
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-	}
-	
-	
-	
 }
