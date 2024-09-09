@@ -6,20 +6,20 @@
 //
 
 import UIKit
+import Kingfisher
+import SwiftKeychainWrapper
 
 
 final class ProfileViewController: UIViewController {
 	//MARK: - Private variables
+	private let profileService: ProfileService = .shared
+	private let profileImageService: ProfileImageService = .shared
+	private var profileImageServiceObserver: NSObjectProtocol?
+	
 	private lazy var profileImage: UIImageView = {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		if let image = UIImage(named: "Mock User") {
-			imageView.image = image
-		} else {
-			imageView.tintColor = .ypGray
-			imageView.image = UIImage(systemName: "person.crop.circle.fill")
-		}
-		imageView.layer.cornerRadius = Sizes.ProfileImage.cornerRadius
+		imageView.tintColor = .ypGray
 		return imageView
 	}()
 	
@@ -27,6 +27,7 @@ final class ProfileViewController: UIViewController {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.setImage(UIImage(named: "Exit"), for: .normal)
+		button.addTarget(self, action: #selector(logout), for: .touchUpInside)
 		return button
 	}()
 	
@@ -37,7 +38,7 @@ final class ProfileViewController: UIViewController {
 		return label
 	}()
 	
-	private lazy var nickLabel: UILabel = {
+	private lazy var loginLabel: UILabel = {
 		let label = makeLabel(with: "@ekaterina_nov")
 		label.font = Fonts.regular13
 		label.textColor = .ypGray
@@ -45,7 +46,7 @@ final class ProfileViewController: UIViewController {
 	}()
 	
 	private lazy var infoLabel: UILabel = {
-		let label = makeLabel(with: "Hello World!")
+		let label = makeLabel(with: "")
 		label.font = Fonts.regular13
 		label.textColor = .ypWhite
 		return label
@@ -54,17 +55,60 @@ final class ProfileViewController: UIViewController {
 	//MARK: - Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		view.backgroundColor = .ypBlack
 		setUpSubViews()
 		setLayoutSubviews()
+		updateProfileDetails(profile: profileService.profile)
+		
+		profileImageServiceObserver = NotificationCenter.default.addObserver(
+			forName: ProfileImageService.didChangeNotification,
+			object: nil,
+			queue: .main,
+			using: { [weak self] _ in
+				guard let self else { return }
+				self.updateAvatar()
+			}
+		)
+		updateAvatar()
 	}
 	
 	//MARK: - Private methods
+	private func updateProfileDetails(profile: Profile?) {
+		if let profile {
+			self.nameLabel.text = profile.name
+			self.loginLabel.text = profile.loginName
+			self.infoLabel.text = profile.bio
+		}
+	}
+	
+	private func updateAvatar() {
+		guard
+			let profileImageURLString = profileImageService.profileImageURLString,
+			let url = URL(string: profileImageURLString)
+		else {
+			print("[\(#fileID)]:[\(#function)] -> " + ProfileImageServiceError.noImageUrl.localizedDescription)
+			return
+		}
+		
+		let processor = RoundCornerImageProcessor(cornerRadius: Sizes.ProfileImage.cornerRadius, backgroundColor: .ypBlack)
+		
+		profileImage.kf.setImage(
+			with: url,
+			placeholder: UIImage(systemName: "person.crop.circle.fill"),
+			options: [.processor(processor)]
+		)
+	}
+	@objc
+	private func logout() {
+		KeychainWrapper.standard.removeAllKeys()
+	}
+	
 	private func setUpSubViews() {
 		[
 			profileImage,
 			exitButton,
 			nameLabel,
-			nickLabel,
+			loginLabel,
 			infoLabel
 		].forEach { subView in
 			view.addSubview(subView)
@@ -79,6 +123,7 @@ final class ProfileViewController: UIViewController {
 		setUpConstraintsInfoLabel()
 	}
 	
+	//MARK: Constraints Methods
 	private func setUpConstraintsProfileImage() {
 		NSLayoutConstraint.activate(
 			[
@@ -114,9 +159,9 @@ final class ProfileViewController: UIViewController {
 	private func setUpConstraintsNickLabel() {
 		NSLayoutConstraint.activate(
 			[
-				nickLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.leading),
-				nickLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Sizes.spacing),
-				nickLabel.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: Sizes.trailing)
+				loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.leading),
+				loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Sizes.spacing),
+				loginLabel.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: Sizes.trailing)
 			]
 		)
 	}
@@ -125,7 +170,7 @@ final class ProfileViewController: UIViewController {
 		NSLayoutConstraint.activate(
 			[
 				infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.leading),
-				infoLabel.topAnchor.constraint(equalTo: nickLabel.bottomAnchor, constant: Sizes.spacing),
+				infoLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: Sizes.spacing),
 				infoLabel.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: Sizes.trailing)
 			]
 		)

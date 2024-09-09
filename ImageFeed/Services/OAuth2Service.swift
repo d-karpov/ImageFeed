@@ -7,58 +7,54 @@
 
 import Foundation
 
-enum DecoderError: Error, LocalizedError {
-	case decodingError(Error)
+enum OAuth2ServiceError: Error, LocalizedError {
+	case invalidRequest
 	
 	var errorDescription: String? {
 		switch self {
-		case .decodingError(let error):
-			return "Decoding error - \(error)"
+		case .invalidRequest: return "[\(#fileID)]:[\(#function)] -> Invalid or doubled request from OAuthService"
 		}
 	}
 }
 
 final class OAuth2Service {
 	static let shared = OAuth2Service()
-	private init() { }
+	private var task: URLSessionTask?
+	private var lastCode: String?
+	private let requestBuilder = RequestsBuilderService.shared
+	
+	private init() {}
 	
 	func fetchOAuthToken(code: String, completion: @escaping(_ result: Result<String, Error>) -> Void) {
-		guard let request = getTokenURLRequest(code: code) else { return }
-		let dataTask = URLSession.shared.data(for: request) { result in
-			switch result {
-			case .success(let data):
-				let decoder = JSONDecoder()
-				decoder.keyDecodingStrategy = .convertFromSnakeCase
-				do {
-					let responseBody = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-					completion(.success(responseBody.accessToken))
-				} catch {
-					completion(.failure(DecoderError.decodingError(error)))
-				}
-			case .failure(let error):
-				completion(.failure(error))
-			}
+		assert(Thread.isMainThread, "\(#function) called not in main thread")
+		guard 
+			let request = requestBuilder.madeRequest(for: .token(code)),
+			lastCode != code
+		else {
+			//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
+			print("\(OAuth2ServiceError.invalidRequest.localizedDescription)")
+			completion(.failure(OAuth2ServiceError.invalidRequest))
+			return
 		}
 		
-		dataTask.resume()
-	}
-	
-	private func getTokenURLRequest(code: String) -> URLRequest? {
-		guard var urlComponents = URLComponents(string: Constants.Token.baseURLString) else { return nil }
+		task?.cancel()
+		lastCode = code
+		let task = URLSession.shared
+			.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+				guard let self else { preconditionFailure("No OAuthService initialized") }
+				self.task = nil
+				self.lastCode = nil
+				switch result {
+				case .success(let responseBody):
+					completion(.success(responseBody.accessToken))
+				case .failure(let error):
+					//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
+					print("[\(#fileID)]:[\(#function)] -> \(error.localizedDescription)")
+					completion(.failure(error))
+				}
+			}
 		
-		urlComponents.queryItems = [
-			URLQueryItem(name: "client_id", value: Constants.API.accessKey),
-			URLQueryItem(name: "client_secret", value: Constants.API.secretKey),
-			URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
-			URLQueryItem(name: "code", value: code),
-			URLQueryItem(name: "grant_type", value: Constants.Token.grantType)
-		]
-		
-		guard let url = urlComponents.url else { return nil }
-		
-		var request = URLRequest(url: url)
-		request.httpMethod = "POST"
-		
-		return request
+		self.task = task
+		task.resume()
 	}
 }

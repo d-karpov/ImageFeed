@@ -17,46 +17,26 @@ final class WebViewViewController: UIViewController {
 	@IBOutlet private weak var webView: WKWebView!
 	@IBOutlet private weak var progressView: UIProgressView!
 	
+	private let requestBuilder: RequestsBuilderService = .shared
+	private var estimatedProgressObservation: NSKeyValueObservation?
+	
 	weak var delegate: WebViewViewControllerDelegate?
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		webView.addObserver(
-			self,
-			forKeyPath: #keyPath(WKWebView.estimatedProgress),
-			options: .new,
-			context: nil
-		)
-	}
-	
+	//MARK: Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		webView.navigationDelegate = self
+		estimatedProgressObservation = webView.observe(
+			\.estimatedProgress,
+			changeHandler: { [weak self] _,_ in
+				if let self {
+					self.updateProgress()
+				}
+			}
+		)
 		loadAuthView()
 	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		webView.removeObserver(
-			self,
-			forKeyPath: #keyPath(WKWebView.estimatedProgress),
-			context: nil
-		)
-	}
-	
-	override func observeValue(
-		forKeyPath keyPath: String?,
-		of object: Any?,
-		change: [NSKeyValueChangeKey : Any]?,
-		context: UnsafeMutableRawPointer?
-	) {
-		if keyPath == #keyPath(WKWebView.estimatedProgress) {
-			updateProgress()
-		} else {
-			super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-		}
-	}
-	
+	//MARK: Private Methods
 	private func updateProgress() {
 		let status = fabs(webView.estimatedProgress - 1.0) <= 0.0001
 		progressView.setProgress( status ? 0 : Float(webView.estimatedProgress), animated: true)
@@ -64,23 +44,15 @@ final class WebViewViewController: UIViewController {
 	}
 	
 	private func loadAuthView() {
-		guard var urlComponents = URLComponents(string: Constants.URLs.authorizeURLString) else { return }
-		
-		urlComponents.queryItems = [
-			URLQueryItem(name: "client_id", value: Constants.API.accessKey),
-			URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
-			URLQueryItem(name: "response_type", value: "code"),
-			URLQueryItem(name: "scope", value: Constants.API.accessScope),
-		]
-		
-		guard let url = urlComponents.url else {
-			return
+		if let request = requestBuilder.madeRequest(for: .auth) {
+			webView.load(request)
+		} else {
+			preconditionFailure("Wrong Auth request! \(#function) line - \(#line)")
 		}
-		let request = URLRequest(url: url)
-		webView.load(request)
 	}
 }
 
+//MARK: - WKNavigationDelegate Implementation
 extension WebViewViewController: WKNavigationDelegate {
 	func webView(
 		_ webView: WKWebView,
