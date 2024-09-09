@@ -9,73 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Single Image View Controller-->
-        <scene sceneID="rwy-25-DdW">
-            <objects>
-                <viewController storyboardIdentifier="SingleImageViewController" modalPresentationStyle="fullScreen" id="Yh9-ks-ulA" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="K9n-Cy-leE">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t0n-dh-g66">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Ech-7H-CnM">
-                                        <rect key="frame" x="0.0" y="0.0" width="271" height="352"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                </subviews>
-                                <viewLayoutGuide key="contentLayoutGuide" id="yeu-mP-Lyf"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="4cP-M7-J8F"/>
-                                <connections>
-                                    <outlet property="delegate" destination="Yh9-ks-ulA" id="Sy1-b5-YeD"/>
-                                </connections>
-                            </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shB-Fn-B24" userLabel="Share Button">
-                                <rect key="frame" x="171.66666666666666" y="717" width="50" height="50"/>
-                                <color key="backgroundColor" name="YP Black "/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="shB-Fn-B24" secondAttribute="height" multiplier="1:1" id="RYJ-bb-42U"/>
-                                    <constraint firstAttribute="width" constant="50" id="qsH-Kh-cTO"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="shareButton"/>
-                                <buttonConfiguration key="configuration" style="plain" image="shareButton"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="25"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hdd-sd-W4t" userLabel="Back Button">
-                                <rect key="frame" x="9" y="55" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="L8V-R2-IqG"/>
-                                    <constraint firstAttribute="width" secondItem="Hdd-sd-W4t" secondAttribute="height" multiplier="1:1" id="qEi-XE-VLm"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="backButton"/>
-                                <buttonConfiguration key="configuration" style="plain" image="backButton"/>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="65P-zl-auI"/>
-                        <color key="backgroundColor" name="YP Black "/>
-                        <constraints>
-                            <constraint firstItem="65P-zl-auI" firstAttribute="trailing" secondItem="t0n-dh-g66" secondAttribute="trailing" id="3ZF-nH-NRG"/>
-                            <constraint firstItem="t0n-dh-g66" firstAttribute="top" secondItem="K9n-Cy-leE" secondAttribute="top" id="Fjo-a4-vIE"/>
-                            <constraint firstItem="t0n-dh-g66" firstAttribute="leading" secondItem="65P-zl-auI" secondAttribute="leading" id="H5G-Ij-8uh"/>
-                            <constraint firstItem="65P-zl-auI" firstAttribute="bottom" secondItem="shB-Fn-B24" secondAttribute="bottom" constant="51" id="IxY-DY-HvO"/>
-                            <constraint firstItem="Hdd-sd-W4t" firstAttribute="leading" secondItem="65P-zl-auI" secondAttribute="leading" constant="9" id="J6F-mc-pUv"/>
-                            <constraint firstAttribute="bottom" secondItem="t0n-dh-g66" secondAttribute="bottom" id="Y2d-hN-2aG"/>
-                            <constraint firstItem="Hdd-sd-W4t" firstAttribute="top" secondItem="K9n-Cy-leE" secondAttribute="top" constant="55" id="bkr-Bh-EIo"/>
-                            <constraint firstItem="shB-Fn-B24" firstAttribute="centerX" secondItem="K9n-Cy-leE" secondAttribute="centerX" id="fIB-oz-Gxe"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XiS-Yz-ceO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1091" y="-1415"/>
-        </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="SHh-b2-ldH">
             <objects>
@@ -214,10 +147,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="0" width="1600" height="1059"/>
         <image name="UnsplashLogo" width="60" height="60"/>
-        <image name="backButton" width="24" height="24"/>
-        <image name="shareButton" width="30" height="30"/>
         <namedColor name="YP Black ">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
