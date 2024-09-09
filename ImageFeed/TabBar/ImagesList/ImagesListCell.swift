@@ -31,7 +31,7 @@ final class ImagesListCell: UITableViewCell {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		imageView.layer.masksToBounds = true
-		imageView.layer.cornerRadius = Sizes.CellImage.cornerRadius
+		imageView.layer.cornerRadius = Sizes.ImageCell.Image.cornerRadius
 		return imageView
 	}()
 	
@@ -82,33 +82,33 @@ final class ImagesListCell: UITableViewCell {
 	private func setLayoutSubViews() {
 		NSLayoutConstraint.activate(
 			[
-				cellImage.topAnchor.constraint(equalTo: topAnchor, constant: Sizes.CellImage.top),
-				cellImage.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Sizes.CellImage.bottom),
-				cellImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Sizes.leading),
-				cellImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Sizes.trailing),
-				likeButton.heightAnchor.constraint(equalToConstant: Sizes.LikeButton.size),
-				likeButton.widthAnchor.constraint(equalToConstant: Sizes.LikeButton.size),
+				cellImage.topAnchor.constraint(equalTo: topAnchor, constant: Sizes.ImageCell.Image.top),
+				cellImage.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Sizes.ImageCell.Image.bottom),
+				cellImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Sizes.ImageCell.Image.leading),
+				cellImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Sizes.ImageCell.Image.trailing),
+				likeButton.heightAnchor.constraint(equalToConstant: Sizes.ImageCell.LikeButton.size),
+				likeButton.widthAnchor.constraint(equalToConstant: Sizes.ImageCell.LikeButton.size),
 				likeButton.topAnchor.constraint(equalTo: cellImage.topAnchor),
 				likeButton.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor),
 				gradientView.bottomAnchor.constraint(equalTo: cellImage.bottomAnchor),
-				gradientView.heightAnchor.constraint(equalToConstant: Sizes.GradientView.height),
+				gradientView.heightAnchor.constraint(equalToConstant: Sizes.ImageCell.GradientView.height),
 				gradientView.leadingAnchor.constraint(equalTo: cellImage.leadingAnchor),
 				gradientView.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor),
 				dateLabel.topAnchor.constraint(
 					equalTo: gradientView.topAnchor,
-					constant: Sizes.DateLabel.top
+					constant: Sizes.ImageCell.DateLabel.top
 				),
 				dateLabel.bottomAnchor.constraint(
 					equalTo: gradientView.bottomAnchor,
-					constant: Sizes.DateLabel.bottom
+					constant: Sizes.ImageCell.DateLabel.bottom
 				),
 				dateLabel.leadingAnchor.constraint(
 					equalTo: gradientView.leadingAnchor,
-					constant: Sizes.DateLabel.leading
+					constant: Sizes.ImageCell.DateLabel.leading
 				),
 				dateLabel.trailingAnchor.constraint(
 					greaterThanOrEqualTo: gradientView.trailingAnchor,
-					constant: Sizes.DateLabel.trailing
+					constant: Sizes.ImageCell.DateLabel.trailing
 				),
 			]
 		)
