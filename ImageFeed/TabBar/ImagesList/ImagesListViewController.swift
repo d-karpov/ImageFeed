@@ -78,15 +78,11 @@ extension ImagesListViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let singleImageViewController = UIStoryboard(
-			name: Constants.Storyboards.main,
-			bundle: .main
-		).instantiateViewController(withIdentifier: Constants.Storyboards.singleImage) as? SingleImageViewController else {
-			preconditionFailure("Can't create SingleImageViewController from Storyboard!!!")
-		}
+		let singleImageViewController = SingleImageViewController()
 		if let imageName = photosNames[safe: indexPath.row], let image = UIImage(named: imageName) {
 			singleImageViewController.image = image
 		}
+		singleImageViewController.modalPresentationStyle = .fullScreen
 		present(singleImageViewController, animated: true)
 	}
 }

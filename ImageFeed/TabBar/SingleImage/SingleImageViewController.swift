@@ -8,9 +8,6 @@
 import UIKit
 
 final class SingleImageViewController: UIViewController {
-	//MARK: - IBOutlets
-	@IBOutlet private weak var imageView: UIImageView!
-	@IBOutlet weak var scrollView: UIScrollView!
 	
 	//MARK: - Public variables
 	var image: UIImage? {
@@ -22,15 +19,21 @@ final class SingleImageViewController: UIViewController {
 			}
 		}
 	}
+	
 	//MARK: - Private Variables
+	private let imageView: UIImageView = .init()
+	private let scrollView: UIScrollView = .init()
+	private let backButton: UIButton = .init(type: .system)
+	private let shareButton: UIButton = .init(type: .system)
 	private var basicScale: CGFloat = 0
 	
 	//MARK: -Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		scrollView.minimumZoomScale = 0.1
-		scrollView.maximumZoomScale = 1.25
-		
+		view.backgroundColor = .ypBlack
+		setUpSubviews()
+		setLayoutSubviews()
+
 		if let image = image {
 			imageView.image = image
 			imageView.frame.size = image.size
@@ -40,6 +43,65 @@ final class SingleImageViewController: UIViewController {
 	}
 	
 	//MARK: - Private Methods
+	private func setUpSubviews() {
+		view.addSubview(scrollView)
+		setUpScrollView()
+		scrollView.addSubview(imageView)
+		view.addSubview(backButton)
+		setUpBackButton()
+		view.addSubview(shareButton)
+		setUpShareButton()
+	}
+	
+	private func setLayoutSubviews() {
+		backButton.translatesAutoresizingMaskIntoConstraints = false
+		shareButton.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate(
+			[
+				//BackButton
+				backButton.topAnchor.constraint(
+					equalTo: view.topAnchor,
+					constant: Sizes.SingleImageView.BackButton.top
+				),
+				backButton.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.SingleImageView.BackButton.leading
+				),
+				backButton.heightAnchor.constraint(equalToConstant: Sizes.SingleImageView.BackButton.size),
+				backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor),
+				//ShareButton
+				shareButton.heightAnchor.constraint(equalToConstant: Sizes.SingleImageView.ShareButton.size),
+				shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
+				shareButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				shareButton.bottomAnchor.constraint(
+					equalTo: view.bottomAnchor,
+					constant: Sizes.SingleImageView.ShareButton.bottom
+				)
+			]
+		)
+	}
+	
+	private func setUpScrollView() {
+		scrollView.delegate = self
+		scrollView.minimumZoomScale = 0.1
+		scrollView.maximumZoomScale = 1.25
+		scrollView.frame = view.bounds
+	}
+	
+	private func setUpBackButton() {
+		backButton.tintColor = .ypWhite
+		backButton.setImage(.backButton, for: .normal)
+		backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+	}
+	
+	private func setUpShareButton() {
+		shareButton.backgroundColor = .ypBlack
+		shareButton.tintColor = .ypWhite
+		shareButton.setImage(.shareButton, for: .normal)
+		shareButton.layer.cornerRadius = Sizes.SingleImageView.ShareButton.cornerRadius
+		shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+	}
+	
 	private func rescaleAndCenterImage(image: UIImage) {
 		let minZoomScale = scrollView.minimumZoomScale
 		let maxZoomScale = scrollView.maximumZoomScale
@@ -58,6 +120,7 @@ final class SingleImageViewController: UIViewController {
 		scrollView.addGestureRecognizer(doubleTabGesture)
 	}
 	
+	//MARK: - Actions
 	@objc private func quickZoom() {
 		if scrollView.zoomScale > basicScale {
 			scrollView.setZoomScale(basicScale, animated: true)
@@ -67,14 +130,13 @@ final class SingleImageViewController: UIViewController {
 		scrollView.layoutIfNeeded()
 	}
 	
-	//MARK: - IBActions
-	@IBAction private func didTapShareButton() {
+	@objc private func didTapShareButton() {
 		guard let image = image else { return }
 		let activityView = UIActivityViewController(activityItems: [image], applicationActivities: .none)
 		present(activityView, animated: true)
 	}
 	
-	@IBAction private func didTapBackButton() {
+	@objc private func didTapBackButton() {
 		dismiss(animated: true)
 	}
 }

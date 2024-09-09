@@ -31,6 +31,20 @@ enum Sizes {
 		
 	}
 	
+	enum SingleImageView {
+		enum BackButton {
+			static let size: CGFloat = 24
+			static let top: CGFloat = 55
+			static let leading: CGFloat = 9
+		}
+		
+		enum ShareButton {
+			static let size: CGFloat = 50
+			static let cornerRadius: CGFloat = size/2
+			static let bottom: CGFloat = -51
+		}
+	}
+	
 	enum LikeButton {
 		static let size: CGFloat = 42
 	}
