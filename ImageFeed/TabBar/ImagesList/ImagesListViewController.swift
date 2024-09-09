@@ -15,6 +15,7 @@ final class ImagesListViewController: UIViewController {
 	//MARK: Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
 		tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
 	}
 	
@@ -45,9 +46,11 @@ private extension ImagesListViewController {
 		guard let imageName = photosNames[safe: indexPath.row], let image = UIImage(named: imageName) else {
 			return
 		}
-		cell.cellImage.image = image
-		cell.likeButton.setImage(indexPath.row.isMultiple(of: 2) ? .activeLike : .noActiveLike, for: .normal)
-		cell.dateLabel.text = Date().dateNoTimeString
+		cell.configure(
+			image: image,
+			date: Date().dateNoTimeString,
+			likeState: indexPath.row.isMultiple(of: 2) ? .activeLike : .noActiveLike
+		)
 	}
 }
 

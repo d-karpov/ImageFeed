@@ -14,6 +14,29 @@ enum Sizes {
 	static let trailing: CGFloat = -16
 	static let spacing: CGFloat = 8
 	
+	enum LikeButton {
+		static let size: CGFloat = 42
+	}
+	
+	enum GradientView {
+		static let height: CGFloat = 30
+	}
+	
+	enum DateLabel {
+		static let top: CGFloat = 4
+		static let bottom: CGFloat = -8
+		static let leading: CGFloat = 8
+		static let trailing: CGFloat = -8
+	}
+	
+	enum CellImage {
+		static let top: CGFloat = 4
+		static let bottom: CGFloat = -4
+		static let leading: CGFloat = 16
+		static let trailing: CGFloat = -16
+		static let cornerRadius: CGFloat = 16
+	}
+	
 	enum ProfileImage {
 		static let size: CGFloat = 70
 		static let cornerRadius: CGFloat = 35

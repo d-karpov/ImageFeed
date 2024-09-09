@@ -228,10 +228,10 @@
 		D3D397072C764A2B00DC82EB /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
+				D3D397082C764A7200DC82EB /* TabBarViewController.swift */,
 				D31399092C38AA3D0056A6F7 /* ImagesList */,
 				D3BD2C3C2C4AAA7C006880B7 /* SingleImage */,
 				D3CE9D1C2C3ECCDF00FA98A0 /* Profile */,
-				D3D397082C764A7200DC82EB /* TabBarViewController.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
