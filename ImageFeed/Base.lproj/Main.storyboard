@@ -9,46 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--ImageList-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController storyboardIdentifier="ImagesListViewController" title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ojb-bN-Nym">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                                <color key="backgroundColor" name="YP Black "/>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="4br-zq-iwY"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="EYM-zv-Vfs"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="YP Black "/>
-                        <constraints>
-                            <constraint firstItem="ojb-bN-Nym" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="MgY-BR-fBG"/>
-                            <constraint firstItem="ojb-bN-Nym" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="NAF-HR-uPI"/>
-                            <constraint firstItem="ojb-bN-Nym" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="PE5-tR-AQn"/>
-                            <constraint firstItem="ojb-bN-Nym" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="wtd-sY-Wz7"/>
-                        </constraints>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="mainTab" id="XBj-tg-Yjm"/>
-                    <connections>
-                        <outlet property="tableView" destination="ojb-bN-Nym" id="zpD-EY-KFq"/>
-                        <segue destination="Yh9-ks-ulA" kind="presentation" identifier="ShowSingleImage" id="Lrh-wz-eNl"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1092" y="-1415"/>
-        </scene>
         <!--Single Image View Controller-->
         <scene sceneID="rwy-25-DdW">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="Yh9-ks-ulA" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SingleImageViewController" modalPresentationStyle="fullScreen" id="Yh9-ks-ulA" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="K9n-Cy-leE">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -68,7 +32,7 @@
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shB-Fn-B24" userLabel="Share Button">
-                                <rect key="frame" x="171.66666666666666" y="751" width="50" height="50"/>
+                                <rect key="frame" x="171.66666666666666" y="717" width="50" height="50"/>
                                 <color key="backgroundColor" name="YP Black "/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="shB-Fn-B24" secondAttribute="height" multiplier="1:1" id="RYJ-bb-42U"/>
@@ -120,7 +84,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XiS-Yz-ceO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2021" y="-1415"/>
+            <point key="canvasLocation" x="1091" y="-1415"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="SHh-b2-ldH">
@@ -263,7 +227,6 @@
         <image name="0" width="1600" height="1059"/>
         <image name="UnsplashLogo" width="60" height="60"/>
         <image name="backButton" width="24" height="24"/>
-        <image name="mainTab" width="30" height="30"/>
         <image name="shareButton" width="30" height="30"/>
         <namedColor name="YP Black ">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

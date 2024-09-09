@@ -37,7 +37,7 @@ enum Constants {
 		static let main: String = "Main"
 		static let tabBar: String = "TabBarViewController"
 		static let auth: String = "AuthNavigationView"
-		static let imagesList: String = "ImagesListViewController"
+		static let singleImage: String = "SingleImageViewController"
 	}
 	
 	enum APIPaths {

@@ -7,37 +7,21 @@
 
 import UIKit
 
-final class ImagesListViewController: UIViewController {
-	@IBOutlet private var tableView: UITableView!
-	
+final class ImagesListViewController: UITableViewController {
 	private let photosNames = (0..<20).map{ "\($0)" }
 	
 	//MARK: Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.backgroundColor = .ypBlack
 		tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
-		tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+		tableView.contentInset = UIEdgeInsets(
+			top: Sizes.TableView.ContentInsets.top,
+			left: Sizes.TableView.ContentInsets.left,
+			bottom: Sizes.TableView.ContentInsets.bottom,
+			right: Sizes.TableView.ContentInsets.right
+		)
 	}
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == Constants.Segues.singleImage {
-			guard
-				let viewController = segue.destination as? SingleImageViewController,
-				let indexPath = sender as? IndexPath
-			else {
-				assertionFailure("Invalid segue destination")
-				return
-			}
-			
-			if let imageName = photosNames[safe: indexPath.row], let image = UIImage(named: imageName) {
-				viewController.image = image
-			}
-			
-		} else {
-			super.prepare(for: segue, sender: sender)
-		}
-	}
-
 }
 
 //MARK: - Private Methods
@@ -55,12 +39,12 @@ private extension ImagesListViewController {
 }
 
 //MARK: - UITableViewDataSource Implementation
-extension ImagesListViewController: UITableViewDataSource {
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension ImagesListViewController {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		photosNames.count
 	}
 	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let imageListCell = tableView.dequeueReusableCell(
 			withIdentifier: ImagesListCell.reuseIdentifier,
 			for: indexPath
@@ -74,13 +58,18 @@ extension ImagesListViewController: UITableViewDataSource {
 }
 
 //MARK: - UITableViewDelegate Implementation
-extension ImagesListViewController: UITableViewDelegate {
-	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+extension ImagesListViewController {
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		guard let image = UIImage(named: photosNames[indexPath.row]) else {
 			return 0
 		}
 		
-		let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+		let imageInsets = UIEdgeInsets(
+			top: Sizes.TableView.ImageInsets.top,
+			left: Sizes.TableView.ImageInsets.left,
+			bottom: Sizes.TableView.ImageInsets.bottom,
+			right: Sizes.TableView.ImageInsets.right
+		)
 		let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
 		let imageWidth = image.size.width
 		let scale = imageViewWidth / imageWidth
@@ -88,7 +77,16 @@ extension ImagesListViewController: UITableViewDelegate {
 		return cellHeight
 	}
 	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		performSegue(withIdentifier: Constants.Segues.singleImage, sender: indexPath)
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		guard let singleImageViewController = UIStoryboard(
+			name: Constants.Storyboards.main,
+			bundle: .main
+		).instantiateViewController(withIdentifier: Constants.Storyboards.singleImage) as? SingleImageViewController else {
+			preconditionFailure("Can't create SingleImageViewController from Storyboard!!!")
+		}
+		if let imageName = photosNames[safe: indexPath.row], let image = UIImage(named: imageName) {
+			singleImageViewController.image = image
+		}
+		present(singleImageViewController, animated: true)
 	}
 }

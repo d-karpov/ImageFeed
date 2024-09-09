@@ -14,6 +14,23 @@ enum Sizes {
 	static let trailing: CGFloat = -16
 	static let spacing: CGFloat = 8
 	
+	enum TableView {
+		enum ContentInsets {
+			static let top: CGFloat = 12
+			static let bottom: CGFloat = 12
+			static let left: CGFloat = 0
+			static let right: CGFloat = 0
+		}
+		
+		enum ImageInsets {
+			static let top: CGFloat = 4
+			static let bottom: CGFloat = 4
+			static let left: CGFloat = 16
+			static let right: CGFloat = 16
+		}
+		
+	}
+	
 	enum LikeButton {
 		static let size: CGFloat = 42
 	}
