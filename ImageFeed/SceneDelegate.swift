@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let scene = (scene as? UIWindowScene) else { return }
 		window = UIWindow(windowScene: scene)
 //		window?.rootViewController = SplashViewController()
-		window?.rootViewController = UIStoryboard(name: Constants.Storyboards.main, bundle: .main).instantiateViewController(withIdentifier: Constants.Storyboards.tabBar)
+		window?.rootViewController = TabBarViewController()
 		window?.makeKeyAndVisible()
 	}
 }
