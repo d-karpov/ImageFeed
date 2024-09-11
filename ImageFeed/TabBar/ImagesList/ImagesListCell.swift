@@ -67,7 +67,7 @@ final class ImagesListCell: UITableViewCell {
 		likeButton.setImage(likeState, for: .normal)
 	}
 	
-	//MARK: - Private Methods
+	//MARK: - Private UI methods
 	private func setUpSubViews() {
 		[
 			cellImage,

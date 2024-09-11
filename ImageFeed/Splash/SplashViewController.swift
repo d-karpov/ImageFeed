@@ -55,17 +55,9 @@ final class SplashViewController: UIViewController {
 	}
 	
 	private func presentAuthViewController() {
-		let storyboard = UIStoryboard(name: Constants.Storyboards.main, bundle: .main)
-		guard
-			let navigationViewController = storyboard.instantiateViewController(
-				withIdentifier: Constants.Storyboards.auth
-			) as? UINavigationController,
-			let authViewController = navigationViewController.topViewController as? AuthViewController
-		else {
-			print("[\(#fileID)]:[\(#function)] -> Wrong AuthView configuration")
-			return
-		}
+		let authViewController = AuthViewController()
 		authViewController.delegate = self
+		let navigationViewController = UINavigationController(rootViewController: authViewController)
 		navigationViewController.modalPresentationStyle = .fullScreen
 		present(navigationViewController, animated: true)
 	}

@@ -14,7 +14,6 @@
 		D30F13672C695DC000FBE04A /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F13662C695DC000FBE04A /* ProfileImageService.swift */; };
 		D31398F22C3870E40056A6F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31398F12C3870E40056A6F7 /* AppDelegate.swift */; };
 		D31398F42C3870E40056A6F7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31398F32C3870E40056A6F7 /* SceneDelegate.swift */; };
-		D31398F92C3870E40056A6F7 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D31398F82C3870E40056A6F7 /* Base */; };
 		D31398FB2C3870E50056A6F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D31398FA2C3870E50056A6F7 /* Assets.xcassets */; };
 		D31398FE2C3870E50056A6F7 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D31398FD2C3870E50056A6F7 /* Base */; };
 		D31399062C38A2C30056A6F7 /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31399052C38A2C30056A6F7 /* ImagesListViewController.swift */; };
@@ -51,7 +50,6 @@
 		D31398EE2C3870E40056A6F7 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D31398F12C3870E40056A6F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D31398F32C3870E40056A6F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D31398F82C3870E40056A6F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D31398FA2C3870E50056A6F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D31398FD2C3870E50056A6F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D31398FF2C3870E50056A6F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -124,7 +122,6 @@
 				D31398F12C3870E40056A6F7 /* AppDelegate.swift */,
 				D31398F32C3870E40056A6F7 /* SceneDelegate.swift */,
 				D37A53502C52691500F98CE5 /* Constants.swift */,
-				D31398F72C3870E40056A6F7 /* Main.storyboard */,
 				D30F13652C6952E700FBE04A /* CommonUI */,
 				D3D6D0422C592B9A00D22204 /* Splash */,
 				D37A53522C52E30C00F98CE5 /* Auth */,
@@ -314,7 +311,6 @@
 			files = (
 				D31398FB2C3870E50056A6F7 /* Assets.xcassets in Resources */,
 				D31398FE2C3870E50056A6F7 /* Base in Resources */,
-				D31398F92C3870E40056A6F7 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,14 +355,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D31398F72C3870E40056A6F7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D31398F82C3870E40056A6F7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D31398FC2C3870E50056A6F7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -510,7 +498,6 @@
 				INFOPLIST_FILE = ImageFeed/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -541,7 +528,6 @@
 				INFOPLIST_FILE = ImageFeed/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (

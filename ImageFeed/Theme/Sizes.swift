@@ -86,6 +86,17 @@ enum Sizes {
 		}
 	}
 	
-	
+	enum AuthView {
+		enum LogoView {
+			static let size: CGFloat = 60
+		}
+		enum LogInButton {
+			static let height: CGFloat = 48
+			static let bottom: CGFloat = -90
+			static let leading: CGFloat = 16
+			static let trailing: CGFloat = -16
+			static let cornerRadius: CGFloat = 16
+		}
+	}
 }
 

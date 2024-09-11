@@ -42,7 +42,7 @@ final class SingleImageViewController: UIViewController {
 		addDoubleTapGesture()
 	}
 	
-	//MARK: - Private Methods
+	//MARK: - Private UI methods
 	private func setUpSubviews() {
 		view.addSubview(scrollView)
 		setUpScrollView()
