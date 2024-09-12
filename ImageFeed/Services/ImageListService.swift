@@ -42,14 +42,16 @@ final class ImageListService {
 								id: photoResponseBody.id,
 								size: .init(width: photoResponseBody.width, height: photoResponseBody.height),
 								createdAt: createdAt,
-								welcomeDescription: photoResponseBody.description,
-								thumbImageURL: photoResponseBody.urls.thumb,
+								welcomeDescription: photoResponseBody.altDescription,
+								thumbImageURL: photoResponseBody.urls.small,
 								largeImageURL: photoResponseBody.urls.full,
 								isLiked: photoResponseBody.likedByUser
 							)
 							self?.photos.append(photo)
 						}
 						NotificationCenter.default.post(name: Self.didChangeNotification, object: nil)
+						self?.currentPage += 1 
+						self?.task = nil
 					case .failure(let error):
 						print(error.localizedDescription)
 					}

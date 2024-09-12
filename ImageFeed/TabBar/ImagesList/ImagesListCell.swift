@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
 	
@@ -41,6 +42,18 @@ final class ImagesListCell: UITableViewCell {
 		return gradientView
 	}()
 	
+	private var placeholder: UIImageView {
+		let placeholder = UIImageView()
+		placeholder.backgroundColor = .ypWhiteAlpha50
+		placeholder.image = .imageStub
+		placeholder.contentMode = .center
+		UIView.animate(withDuration: 1.5, delay: 0, options: [.repeat, .autoreverse]) {
+			placeholder.tintColor = .ypBlack
+			placeholder.tintColor = .ypGray
+		}
+		return placeholder
+	}
+	
 	//MARK: -Lifecycle
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -55,14 +68,23 @@ final class ImagesListCell: UITableViewCell {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		cellImage.kf.cancelDownloadTask()
+		cellImage.image = nil
+	}
+	
 	override func layoutSublayers(of layer: CALayer) {
 		super.layoutSublayers(of: layer)
 		gradient.frame = gradientView.bounds
 	}
 	
 	//MARK: - Public Methods
-	func configure(image: UIImage, date: String, likeState: UIImage) {
-		cellImage.image = image
+	func configure(image: String, date: String, likeState: UIImage) {
+		cellImage.kf.setImage(
+			with: URL(string: image),
+			placeholder: placeholder
+		)
 		dateLabel.text = date
 		likeButton.setImage(likeState, for: .normal)
 	}

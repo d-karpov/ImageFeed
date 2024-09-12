@@ -12,7 +12,7 @@ struct PhotosResponseBody: Decodable {
 	let createdAt: String
 	let width: Int
 	let height: Int
-	let description: String?
+	let altDescription: String?
 	let urls: URLsResult
 	let likedByUser: Bool
 }
@@ -20,4 +20,5 @@ struct PhotosResponseBody: Decodable {
 struct URLsResult: Decodable {
 	let full: String
 	let thumb: String
+	let small: String
 }
