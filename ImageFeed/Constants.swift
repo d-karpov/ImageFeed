@@ -28,21 +28,10 @@ enum Constants {
 		static let baseURLString: String = "https://api.unsplash.com/"
 	}
 	
-	enum Segues {
-		static let webView: String = "ShowWebView"
-		static let singleImage: String = "ShowSingleImage"
-	}
-	
-	enum Storyboards {
-		static let main: String = "Main"
-		static let tabBar: String = "TabBarViewController"
-		static let auth: String = "AuthNavigationView"
-		static let singleImage: String = "SingleImageViewController"
-	}
-	
 	enum APIPaths {
 		static let userData: String = "me"
 		static let userPublicData: String = "users/"
+		static let photos: String = "photos"
 	}
 	
 	enum ImageSizes {

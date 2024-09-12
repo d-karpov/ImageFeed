@@ -9,6 +9,7 @@ import UIKit
 
 final class ImagesListViewController: UITableViewController {
 	private let photosNames = (0..<20).map{ "\($0)" }
+	private let photosService = ImageListService()
 	
 	//MARK: Lifecycle
 	override func viewDidLoad() {
@@ -84,5 +85,9 @@ extension ImagesListViewController {
 		}
 		singleImageViewController.modalPresentationStyle = .fullScreen
 		present(singleImageViewController, animated: true)
+	}
+	
+	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		photosService.fetchPhotosNextPage()
 	}
 }

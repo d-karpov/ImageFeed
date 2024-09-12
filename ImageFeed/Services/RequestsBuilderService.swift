@@ -12,6 +12,7 @@ enum RequestPath {
 	case userBaseData
 	case userImage(String)
 	case auth
+	case photos(Int)
 	
 	var URLString: String {
 		switch self {
@@ -23,6 +24,8 @@ enum RequestPath {
 			return Constants.URLs.baseURLString + Constants.APIPaths.userData
 		case .userImage(let userName):
 			return Constants.URLs.baseURLString + Constants.APIPaths.userPublicData + userName
+		case .photos(_):
+			return Constants.URLs.baseURLString + Constants.APIPaths.photos
 		}
 	}
 }
@@ -41,6 +44,8 @@ final class RequestsBuilderService {
 			return getUserInformationRequest(urlString: path.URLString)
 		case .auth:
 			return getAuthRequest(urlString: path.URLString)
+		case .photos(let page):
+			return getPhotosAtPage(at:page, urlString: path.URLString)
 		}
 	}
 	
@@ -87,6 +92,20 @@ final class RequestsBuilderService {
 		}
 		var request = URLRequest(url: url)
 		request.setValue("Bearer \(token)", forHTTPHeaderField: Constants.Token.requestHeader)
+		return request
+	}
+	
+	private func getPhotosAtPage(at page: Int, urlString: String) -> URLRequest? {
+		guard var urlComponents = URLComponents(string: urlString) else { return nil }
+		
+		urlComponents.queryItems = [
+			URLQueryItem(name: "client_id", value: Constants.API.accessKey),
+			URLQueryItem(name: "page", value: page.description),
+			URLQueryItem(name: "per_page", value: 10.description)
+		]
+		
+		guard let url = urlComponents.url else { return nil }
+		let request = URLRequest(url: url)
 		return request
 	}
 }
