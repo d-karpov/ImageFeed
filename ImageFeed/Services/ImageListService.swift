@@ -37,27 +37,56 @@ final class ImageListService {
 					switch result {
 					case .success(let response):
 						response.forEach { photoResponseBody in
-							let createdAt = ISO8601DateFormatter().date(from: photoResponseBody.createdAt)
-							let photo = Photo(
-								id: photoResponseBody.id,
-								size: .init(width: photoResponseBody.width, height: photoResponseBody.height),
-								createdAt: createdAt,
-								welcomeDescription: photoResponseBody.altDescription,
-								thumbImageURL: photoResponseBody.urls.small,
-								largeImageURL: photoResponseBody.urls.full,
-								isLiked: photoResponseBody.likedByUser
-							)
-							self?.photos.append(photo)
+							if let photo = self?.makePhotoFromResponse(from: photoResponseBody) {
+								self?.photos.append(photo)
+							}
 						}
 						NotificationCenter.default.post(name: Self.didChangeNotification, object: nil)
-						self?.currentPage += 1 
+						self?.currentPage += 1
 						self?.task = nil
 					case .failure(let error):
-						print(error.localizedDescription)
+						print("[\(#fileID)]:[\(#function)] -> " + error.localizedDescription)
 					}
-			}
+				}
 			self.task = task
 			task.resume()
 		}
 	}
+	
+	func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Photo, Error>) -> Void) {
+		guard let request = requestBuilder.madeRequest(for: .like(photoId, isLike)) else {
+			print(ImageListServiceError.invalidRequest.localizedDescription)
+			return
+		}
+		if let photoIndex = photos.firstIndex(where: { $0.id == photoId }) {
+			let task = URLSession.shared
+				.objectTask(for: request) { [weak self] (result: Result<LikeResponseBody, Error>) in
+					switch result {
+					case .success(let likeResponseBody):
+						if let photo = self?.makePhotoFromResponse(from: likeResponseBody.photo) {
+							self?.photos[photoIndex] = photo
+							completion(.success(photo))
+						}
+					case .failure(let error):
+						completion(.failure(error))
+					}
+				}
+				task.resume()
+		}
+	}
+	
+	private func makePhotoFromResponse(from photoResponseBody: PhotosResponseBody) -> Photo {
+		let createdAt = ISO8601DateFormatter().date(from: photoResponseBody.createdAt)
+		let photo = Photo(
+			id: photoResponseBody.id,
+			size: .init(width: photoResponseBody.width, height: photoResponseBody.height),
+			createdAt: createdAt,
+			welcomeDescription: photoResponseBody.altDescription,
+			thumbImageURL: photoResponseBody.urls.small,
+			largeImageURL: photoResponseBody.urls.full,
+			isLiked: photoResponseBody.likedByUser
+		)
+		return photo
+	}
+	
 }

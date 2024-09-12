@@ -38,13 +38,15 @@ final class ImagesListViewController: UITableViewController {
 //MARK: - Private Methods
 private extension ImagesListViewController {
 	func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-		guard let imageName = photosService.photos[safe: indexPath.row]?.thumbImageURL else {
+		guard let photo = photosService.photos[safe: indexPath.row] else {
 			return
 		}
+		let imageName = photo.thumbImageURL
+		cell.delegate = self
 		cell.configure(
 			image: imageName,
-			date: Date().dateNoTimeString,
-			likeState: indexPath.row.isMultiple(of: 2) ? .activeLike : .noActiveLike
+			date: photo.createdAt?.dateNoTimeString ?? Date().dateNoTimeString,
+			likeState: photo.isLiked
 		)
 	}
 	
@@ -112,6 +114,24 @@ extension ImagesListViewController {
 	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		if indexPath.row == photosService.photos.count - 1 {
 			photosService.fetchPhotosNextPage()
+		}
+	}
+}
+
+//MARK: - ImagesListCellDelegate Implementation
+extension ImagesListViewController: ImagesListCellDelegate {
+	func imageListCellDidTapLike(_ cell: ImagesListCell) {
+		if let photoIndex = tableView.indexPath(for: cell), let photo = photosService.photos[safe: photoIndex.row] {
+			UIBlockingProgressHUD.show()
+			photosService.changeLike(photoId: photo.id, isLike: photo.isLiked) { result in
+				UIBlockingProgressHUD.dismiss()
+				switch result {
+				case .success(let photo):
+					cell.setLikeImage(isLike: photo.isLiked)
+				case .failure(let error):
+					print("[\(#fileID)]:[\(#function)] -> " + error.localizedDescription)
+				}
+			}
 		}
 	}
 }

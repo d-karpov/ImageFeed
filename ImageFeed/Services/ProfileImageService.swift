@@ -34,7 +34,6 @@ final class ProfileImageService {
 			let request = requestBuilder.madeRequest(for: .userImage(userName)),
 			task == nil
 		else {
-			print("\(ProfileImageServiceError.invalidRequest.localizedDescription)")
 			completion(.failure(ProfileImageServiceError.invalidRequest))
 			return
 		}
@@ -50,7 +49,6 @@ final class ProfileImageService {
 					guard
 						let profileImageURLString = responseBody.profileImage[Constants.ImageSizes.profileImage]
 					else {
-						print("\(ProfileImageServiceError.noImageUrl.localizedDescription)")
 						return completion(.failure(ProfileImageServiceError.noImageUrl))
 					}
 					self.profileImageURLString = profileImageURLString
@@ -61,7 +59,6 @@ final class ProfileImageService {
 						userInfo: nil
 					)
 				case .failure(let error):
-					print("[\(#fileID)]:[\(#function)] -> \(error.localizedDescription)")
 					completion(.failure(error))
 				}
 			}

@@ -31,8 +31,6 @@ final class ProfileService {
 			let request = requestBuilder.madeRequest(for: .userBaseData),
 			task == nil
 		else {
-			//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-			print("\(ProfileServiceError.invalidRequest.localizedDescription)")
 			completion(.failure(ProfileServiceError.invalidRequest))
 			return
 		}
@@ -53,8 +51,6 @@ final class ProfileService {
 					self.profile = profile
 					completion(.success(profile))
 				case .failure(let error):
-					//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-					print("[\(#fileID)]:[\(#function)] -> \(error.localizedDescription)")
 					completion(.failure(error))
 				}
 			}

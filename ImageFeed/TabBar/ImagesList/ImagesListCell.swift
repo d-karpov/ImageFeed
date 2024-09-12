@@ -8,7 +8,12 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+	func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
+	weak var delegate: ImagesListCellDelegate?
 	
 	static let reuseIdentifier: String = "ImagesListCell"
 	
@@ -62,6 +67,7 @@ final class ImagesListCell: UITableViewCell {
 		setUpSubViews()
 		setLayoutSubViews()
 		setUpGradientBackground()
+		likeButton.addTarget(self, action: #selector(likeButtonClicked), for: .touchUpInside)
 	}
 	
 	required init?(coder: NSCoder) {
@@ -80,24 +86,28 @@ final class ImagesListCell: UITableViewCell {
 	}
 	
 	//MARK: - Public Methods
-	func configure(image: String, date: String, likeState: UIImage) {
+	func configure(image: String, date: String, likeState: Bool) {
 		cellImage.kf.setImage(
 			with: URL(string: image),
 			placeholder: placeholder
 		)
 		dateLabel.text = date
-		likeButton.setImage(likeState, for: .normal)
+		setLikeImage(isLike: likeState)
+	}
+	
+	func setLikeImage(isLike: Bool) {
+		likeButton.setImage(isLike ? .activeLike : .noActiveLike, for: .normal)
 	}
 	
 	//MARK: - Private UI methods
 	private func setUpSubViews() {
 		[
 			cellImage,
-			likeButton,
 			gradientView,
-			dateLabel
+			dateLabel,
+			likeButton
 		].forEach { subView in
-			addSubview(subView)
+			contentView.addSubview(subView)
 		}
 	}
 	
@@ -142,5 +152,10 @@ final class ImagesListCell: UITableViewCell {
 			UIColor.ypBlack.withAlphaComponent(0.4).cgColor
 		]
 		gradientView.layer.insertSublayer(gradient, at: 0)
+	}
+	
+	@objc
+	private func likeButtonClicked() {
+		delegate?.imageListCellDidTapLike(self)
 	}
 }

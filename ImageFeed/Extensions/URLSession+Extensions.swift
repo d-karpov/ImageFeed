@@ -67,11 +67,9 @@ extension URLSession {
 					let responseBody = try decoder.decode(T.self, from: data)
 					completion(.success(responseBody))
 				} catch {
-					print("\(DecoderError.decodingError(error).localizedDescription)")
 					completion(.failure(DecoderError.decodingError(error)))
 				}
 			case .failure(let error):
-				print("\(error.localizedDescription)")
 				completion(.failure(error))
 			}
 		}
@@ -95,14 +93,11 @@ extension URLSession {
 				if 200..<300 ~= statusCode {
 					fulfillCompletionOnTheMainThread(.success(data))
 				} else {
-					print("\(NetworkError.httpStatusCode(statusCode).localizedDescription)")
 					fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
 				}
 			} else if let error = error {
-				print("\(NetworkError.urlRequestError(error).localizedDescription)")
 				fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
 			} else {
-				print("\(NetworkError.urlSessionError.localizedDescription)")
 				fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
 			}
 		}

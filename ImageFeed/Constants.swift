@@ -12,7 +12,7 @@ enum Constants {
 		static let accessKey: String = "ejqijlQzts9kTelhZ9TMCa1zIXl4SHlqllhflccFeUk"
 		static let secretKey: String = "jJLxC3Rc4Qg_mt-fTucq66LpBHwH5uSrUcl5_de39t0"
 		static let redirectURI: String = "urn:ietf:wg:oauth:2.0:oob"
-		static let accessScope: String = "public+read_user"
+		static let accessScope: String = "public+read_user+write_likes"
 	}
 	
 	enum Token {
@@ -31,7 +31,8 @@ enum Constants {
 	enum APIPaths {
 		static let userData: String = "me"
 		static let userPublicData: String = "users/"
-		static let photos: String = "photos"
+		static let photos: String = "photos/"
+		static let like: String = "/like"
 	}
 	
 	enum ImageSizes {
