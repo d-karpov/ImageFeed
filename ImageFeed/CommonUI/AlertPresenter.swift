@@ -25,10 +25,26 @@ struct AlertPresenter {
 			with: .init(
 				title: Constants.AlertTexts.title,
 				message: Constants.AlertTexts.authMessage,
-				buttonText: Constants.AlertTexts.buttonText,
+				buttonText: Constants.AlertTexts.buttonOk,
 				action: { }
 			),
 			at: view
 		)
+	}
+	
+	static func showDownloadError(at view: UIViewController, with action: @escaping () -> Void) {
+		let alert = UIAlertController(
+			title: Constants.AlertTexts.title,
+			message: Constants.AlertTexts.downloadMessage,
+			preferredStyle: .alert
+		)
+		let noAction = UIAlertAction(title: Constants.AlertTexts.noButton, style: .default)
+		let againAction = UIAlertAction(title: Constants.AlertTexts.againButton, style: .default) { _ in
+			action()
+		}
+		alert.addAction(noAction)
+		alert.addAction(againAction)
+		alert.preferredAction = againAction
+		view.present(alert, animated: true)
 	}
 }

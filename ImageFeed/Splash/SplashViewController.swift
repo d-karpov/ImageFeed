@@ -89,6 +89,7 @@ final class SplashViewController: UIViewController {
 				self.showTabBarViewController()
 			case .failure(let error):
 				print("[\(#fileID)]:[\(#function)] -> " + error.localizedDescription)
+				AlertPresenter.showAuthError(at: self)
 			}
 		}
 	}

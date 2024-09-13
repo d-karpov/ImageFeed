@@ -104,8 +104,8 @@ extension ImagesListViewController {
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let singleImageViewController = SingleImageViewController()
-		if let imageName = photosService.photos[safe: indexPath.row]?.largeImageURL, let image = UIImage(named: imageName) {
-			singleImageViewController.image = image
+		if let imageURLString = photosService.photos[safe: indexPath.row]?.largeImageURL {
+			singleImageViewController.imageURLString = imageURLString
 		}
 		singleImageViewController.modalPresentationStyle = .fullScreen
 		present(singleImageViewController, animated: true)

@@ -42,6 +42,9 @@ enum Constants {
 	enum AlertTexts {
 		static let title: String = "Что-то пошло не так("
 		static let authMessage: String = "Не удалось войти в систему"
-		static let buttonText: String = "Ок"
+		static let buttonOk: String = "Ок"
+		static let downloadMessage: String = "Попробовать ещё раз?"
+		static let againButton: String = "Повторить"
+		static let noButton: String = "Не надо"
 	}
 }

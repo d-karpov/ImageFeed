@@ -6,21 +6,25 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
 	
 	//MARK: - Public variables
-	var image: UIImage? {
-		didSet {
-			if let image = image, isViewLoaded {
-				imageView.image = image
-				imageView.frame.size = image.size
-				rescaleAndCenterImage(image: image)
-			}
-		}
-	}
+	var imageURLString: String?
 	
 	//MARK: - Private Variables
+	private var placeholder: UIImageView {
+		let placeholder = UIImageView()
+		placeholder.backgroundColor = .clear
+		placeholder.image = .imageStub
+		placeholder.contentMode = .center
+		UIView.animate(withDuration: 1.5, delay: 0, options: [.repeat, .autoreverse]) {
+			placeholder.tintColor = .clear
+			placeholder.tintColor = .ypWhite
+		}
+		return placeholder
+	}
 	private let imageView: UIImageView = .init()
 	private let scrollView: UIScrollView = .init()
 	private let backButton: UIButton = .init(type: .system)
@@ -33,13 +37,12 @@ final class SingleImageViewController: UIViewController {
 		view.backgroundColor = .ypBlack
 		setUpSubviews()
 		setLayoutSubviews()
-
-		if let image = image {
-			imageView.image = image
-			imageView.frame.size = image.size
-			rescaleAndCenterImage(image: image)
-		}
 		addDoubleTapGesture()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		setImage()
 	}
 	
 	//MARK: - Private UI methods
@@ -112,12 +115,34 @@ final class SingleImageViewController: UIViewController {
 		basicScale = min(maxZoomScale, max(minZoomScale, min(hScale, vScale)))
 		scrollView.setZoomScale(basicScale, animated: false)
 		scrollView.layoutIfNeeded()
+		let x = (scrollView.contentSize.width - visibleRectSize.width) / 2
+		let y = (scrollView.contentSize.height - visibleRectSize.height) / 2
+		scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
 	}
 	
 	private func addDoubleTapGesture() {
 		let doubleTabGesture = UITapGestureRecognizer(target: self, action: #selector(quickZoom))
 		doubleTabGesture.numberOfTapsRequired = 2
 		scrollView.addGestureRecognizer(doubleTabGesture)
+	}
+	
+	private func setImage() {
+		if let imageURLString {
+			imageView.frame.size = view.bounds.size
+			imageView.kf.setImage(
+				with: URL(string: imageURLString),
+				placeholder: placeholder
+			) { [weak self] result in
+				guard let self else { preconditionFailure("No SingleImageViewController!!!") }
+				switch result {
+				case .success(let retrievedData):
+					imageView.frame.size = retrievedData.image.size
+					rescaleAndCenterImage(image: retrievedData.image)
+				case .failure(let error):
+					AlertPresenter.showDownloadError(at: self, with: setImage)
+				}
+			}
+		}
 	}
 	
 	//MARK: - Actions
@@ -131,7 +156,7 @@ final class SingleImageViewController: UIViewController {
 	}
 	
 	@objc private func didTapShareButton() {
-		guard let image = image else { return }
+		guard let image = imageView.image else { return }
 		let activityView = UIActivityViewController(activityItems: [image], applicationActivities: .none)
 		present(activityView, animated: true)
 	}
