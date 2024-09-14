@@ -25,6 +25,11 @@ final class ProfileService {
 	
 	private init() {}
 	
+	func cleanSavedData() {
+		task = nil
+		profile = nil
+	}
+	
 	func fetchProfile(completion: @escaping(Result<Profile, Error>) -> Void) {
 		assert(Thread.isMainThread, "\(#function) called not in main thread")
 		guard

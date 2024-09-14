@@ -28,6 +28,11 @@ final class ProfileImageService {
 	
 	private init() {}
 	
+	func cleanSavedData() {
+		task = nil
+		profileImageURLString = nil
+	}
+	
 	func fetchProfileImage(userName: String, completion: @escaping(Result<String, Error>) -> Void) {
 		assert(Thread.isMainThread, "\(#function) called not in main thread")
 		guard

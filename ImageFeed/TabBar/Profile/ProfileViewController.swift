@@ -7,13 +7,13 @@
 
 import UIKit
 import Kingfisher
-import SwiftKeychainWrapper
 
 
 final class ProfileViewController: UIViewController {
 	//MARK: - Private variables
 	private let profileService: ProfileService = .shared
 	private let profileImageService: ProfileImageService = .shared
+	private let profileLogoutService: ProfileLogoutService = .shared
 	private var profileImageServiceObserver: NSObjectProtocol?
 	
 	private lazy var profileImage: UIImageView = {
@@ -103,7 +103,14 @@ final class ProfileViewController: UIViewController {
 	}
 	@objc
 	private func logout() {
-		KeychainWrapper.standard.removeAllKeys()
+		AlertPresenter.logout(at: self) { [weak self] in
+			guard let self else { preconditionFailure("No ProfileViewController!!") }
+			profileLogoutService.logOut()
+			let splashView = SplashViewController()
+			splashView.modalPresentationStyle = .fullScreen
+			dismiss(animated: true)
+			present(splashView, animated: true)
+		}
 	}
 	
 	private func setUpSubViews() {

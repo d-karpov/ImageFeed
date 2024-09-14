@@ -63,17 +63,9 @@ final class SplashViewController: UIViewController {
 	}
 	
 	private func showTabBarViewController() {
-		guard
-			let window = UIApplication
-				.shared
-				.connectedScenes
-				.flatMap({ ($0 as? UIWindowScene)?.windows ?? [] })
-				.last(where: \.isKeyWindow)
-		else {
-			assertionFailure("Invalid window configuration")
-			return
-		}
-		window.rootViewController = TabBarViewController()
+		let tabBarViewController = TabBarViewController()
+		tabBarViewController.modalPresentationStyle = .fullScreen
+		present(tabBarViewController, animated: true)
 	}
 	
 	private func fetchProfile() {
