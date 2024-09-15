@@ -45,7 +45,7 @@ private extension ImagesListViewController {
 		cell.delegate = self
 		cell.configure(
 			image: imageName,
-			date: photo.createdAt?.dateNoTimeString ?? Date().dateNoTimeString,
+			date: photo.createdAt?.dateNoTimeString ?? "",
 			likeState: photo.isLiked
 		)
 	}
