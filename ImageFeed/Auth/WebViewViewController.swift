@@ -12,11 +12,9 @@ protocol WebViewViewControllerDelegate: AnyObject {
 	func webViewViewController(_ viewController: WebViewViewController, didAuthenticateWithCode code: String)
 }
 
-
 final class WebViewViewController: UIViewController {
-	@IBOutlet private weak var webView: WKWebView!
-	@IBOutlet private weak var progressView: UIProgressView!
-	
+	private let webView: WKWebView = .init()
+	private let progressView: UIProgressView = .init(progressViewStyle: .bar)
 	private let requestBuilder: RequestsBuilderService = .shared
 	private var estimatedProgressObservation: NSKeyValueObservation?
 	
@@ -25,6 +23,10 @@ final class WebViewViewController: UIViewController {
 	//MARK: Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		view.backgroundColor = .ypWhite
+		progressView.progressTintColor = .ypBlack
+		setUpSubViews()
+		setLayoutSubviews()
 		webView.navigationDelegate = self
 		estimatedProgressObservation = webView.observe(
 			\.estimatedProgress,
@@ -36,6 +38,34 @@ final class WebViewViewController: UIViewController {
 		)
 		loadAuthView()
 	}
+	
+	//MARK: - Private UI methods
+	private func setUpSubViews() {
+		[
+			webView,
+			progressView
+		].forEach { subView in
+			view.addSubview(subView)
+		}
+	}
+	
+	private func setLayoutSubviews() {
+		webView.translatesAutoresizingMaskIntoConstraints = false
+		progressView.translatesAutoresizingMaskIntoConstraints = false
+		
+		NSLayoutConstraint.activate(
+			[
+				webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+				webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+				webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+				webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+				progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+				progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+				progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+			]
+		)
+	}
+	
 	//MARK: Private Methods
 	private func updateProgress() {
 		let status = fabs(webView.estimatedProgress - 1.0) <= 0.0001

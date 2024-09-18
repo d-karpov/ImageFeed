@@ -67,15 +67,9 @@ extension URLSession {
 					let responseBody = try decoder.decode(T.self, from: data)
 					completion(.success(responseBody))
 				} catch {
-					//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-					//Данные о том, что именно не удалось декодировать разбираются по классам ошибок в DecoderError.
-					print("\(DecoderError.decodingError(error).localizedDescription)")
 					completion(.failure(DecoderError.decodingError(error)))
 				}
 			case .failure(let error):
-				//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-				//Ошибка уже в общем формате так как пробрасывается из метода data(for: completion:).
-				print("\(error.localizedDescription)")
 				completion(.failure(error))
 			}
 		}
@@ -99,17 +93,11 @@ extension URLSession {
 				if 200..<300 ~= statusCode {
 					fulfillCompletionOnTheMainThread(.success(data))
 				} else {
-					//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-					print("\(NetworkError.httpStatusCode(statusCode).localizedDescription)")
 					fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode)))
 				}
 			} else if let error = error {
-				//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-				print("\(NetworkError.urlRequestError(error).localizedDescription)")
 				fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error)))
 			} else {
-				//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-				print("\(NetworkError.urlSessionError.localizedDescription)")
 				fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
 			}
 		}

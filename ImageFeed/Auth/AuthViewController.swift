@@ -12,7 +12,8 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-	
+	private let logInButton: UIButton = .init(type: .system)
+	private let logoView: UIImageView = .init(image: .unsplashLogo)
 	private let oAuth2Service = OAuth2Service.shared
 	private let oAuth2Storage = OAuth2TokenStorageService.shared
 	
@@ -20,17 +21,49 @@ final class AuthViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		view.backgroundColor = .ypBlack
+		logoView.contentMode = .scaleAspectFill
+		setUpSubViews()
+		setLayoutSubviews()
 		configureBackButton()
+		configureLogInButton()
 	}
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if
-			segue.identifier == Constants.Segues.webView,
-			let webViewViewController = segue.destination as? WebViewViewController {
-			webViewViewController.delegate = self
-		} else {
-			super.prepare(for: segue, sender: sender)
+	//MARK: - Private UI methods
+	private func setUpSubViews() {
+		[
+			logoView,
+			logInButton
+		].forEach { subView in
+			view.addSubview(subView)
 		}
+	}
+	
+	private func setLayoutSubviews() {
+		logoView.translatesAutoresizingMaskIntoConstraints = false
+		logInButton.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate(
+			[
+				logoView.heightAnchor.constraint(equalToConstant: Sizes.AuthView.LogoView.size),
+				logoView.widthAnchor.constraint(equalTo: logoView.heightAnchor),
+				logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				logoView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+				logInButton.heightAnchor.constraint(equalToConstant: Sizes.AuthView.LogInButton.height),
+				logInButton.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.AuthView.LogInButton.leading
+				),
+				logInButton.trailingAnchor.constraint(
+					equalTo: view.trailingAnchor,
+					constant: Sizes.AuthView.LogInButton.trailing
+				),
+				logInButton.bottomAnchor.constraint(
+					equalTo: view.bottomAnchor,
+					constant: Sizes.AuthView.LogInButton.bottom
+				)
+			]
+		)
+		
 	}
 	
 	private func configureBackButton() {
@@ -45,6 +78,20 @@ final class AuthViewController: UIViewController {
 		navigationItem.backBarButtonItem?.tintColor = .ypBlack
 	}
 	
+	private func configureLogInButton() {
+		logInButton.setTitle("Войти", for: .normal)
+		logInButton.titleLabel?.font = Fonts.bold17
+		logInButton.tintColor = .ypBlack
+		logInButton.backgroundColor = .ypWhite
+		logInButton.layer.cornerRadius = Sizes.AuthView.LogInButton.cornerRadius
+		logInButton.addTarget(self, action: #selector(didTapedLogInButton), for: .touchUpInside)
+	}
+	
+	@objc private func didTapedLogInButton() {
+		let webView = WebViewViewController()
+		webView.delegate = self
+		self.navigationController?.pushViewController(webView, animated: true)
+	}
 	
 	@objc private func didTapedBackButton() {
 		dismiss(animated: true)

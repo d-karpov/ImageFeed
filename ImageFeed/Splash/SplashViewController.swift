@@ -55,34 +55,17 @@ final class SplashViewController: UIViewController {
 	}
 	
 	private func presentAuthViewController() {
-		let storyboard = UIStoryboard(name: Constants.Storyboards.main, bundle: .main)
-		guard
-			let navigationViewController = storyboard.instantiateViewController(
-				withIdentifier: Constants.Storyboards.auth
-			) as? UINavigationController,
-			let authViewController = navigationViewController.topViewController as? AuthViewController
-		else {
-			print("[\(#fileID)]:[\(#function)] -> Wrong AuthView configuration")
-			return
-		}
+		let authViewController = AuthViewController()
 		authViewController.delegate = self
+		let navigationViewController = UINavigationController(rootViewController: authViewController)
 		navigationViewController.modalPresentationStyle = .fullScreen
 		present(navigationViewController, animated: true)
 	}
 	
 	private func showTabBarViewController() {
-		guard
-			let window = UIApplication
-				.shared
-				.connectedScenes
-				.flatMap({ ($0 as? UIWindowScene)?.windows ?? [] })
-				.last(where: \.isKeyWindow)
-		else {
-			assertionFailure("Invalid window configuration")
-			return
-		}
-		window.rootViewController = UIStoryboard(name: Constants.Storyboards.main, bundle: .main)
-			.instantiateViewController(withIdentifier: Constants.Storyboards.tabBar)
+		let tabBarViewController = TabBarViewController()
+		tabBarViewController.modalPresentationStyle = .fullScreen
+		present(tabBarViewController, animated: true)
 	}
 	
 	private func fetchProfile() {
@@ -98,6 +81,7 @@ final class SplashViewController: UIViewController {
 				self.showTabBarViewController()
 			case .failure(let error):
 				print("[\(#fileID)]:[\(#function)] -> " + error.localizedDescription)
+				AlertPresenter.showAuthError(at: self)
 			}
 		}
 	}

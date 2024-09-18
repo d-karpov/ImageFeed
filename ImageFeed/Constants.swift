@@ -12,7 +12,7 @@ enum Constants {
 		static let accessKey: String = "ejqijlQzts9kTelhZ9TMCa1zIXl4SHlqllhflccFeUk"
 		static let secretKey: String = "jJLxC3Rc4Qg_mt-fTucq66LpBHwH5uSrUcl5_de39t0"
 		static let redirectURI: String = "urn:ietf:wg:oauth:2.0:oob"
-		static let accessScope: String = "public+read_user"
+		static let accessScope: String = "public+read_user+write_likes"
 	}
 	
 	enum Token {
@@ -28,21 +28,11 @@ enum Constants {
 		static let baseURLString: String = "https://api.unsplash.com/"
 	}
 	
-	enum Segues {
-		static let webView: String = "ShowWebView"
-		static let singleImage: String = "ShowSingleImage"
-	}
-	
-	enum Storyboards {
-		static let main: String = "Main"
-		static let tabBar: String = "TabBarViewController"
-		static let auth: String = "AuthNavigationView"
-		static let imagesList: String = "ImagesListViewController"
-	}
-	
 	enum APIPaths {
 		static let userData: String = "me"
 		static let userPublicData: String = "users/"
+		static let photos: String = "photos/"
+		static let like: String = "/like"
 	}
 	
 	enum ImageSizes {
@@ -50,8 +40,15 @@ enum Constants {
 	}
 	
 	enum AlertTexts {
-		static let title: String = "Что-то пошло не так("
+		static let errorTitle: String = "Что-то пошло не так("
 		static let authMessage: String = "Не удалось войти в систему"
-		static let buttonText: String = "Ок"
+		static let okButton: String = "Ок"
+		static let downloadMessage: String = "Попробовать ещё раз?"
+		static let againButton: String = "Повторить"
+		static let noNeedButton: String = "Не надо"
+		static let yesButton: String = "Да"
+		static let noButton: String = "Нет"
+		static let logoutMessage: String = "Уверены что хотите выйти"
+		static let logoutTitle: String = "Пока, пока!"
 	}
 }

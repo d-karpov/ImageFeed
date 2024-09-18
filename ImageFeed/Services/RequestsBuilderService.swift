@@ -12,6 +12,8 @@ enum RequestPath {
 	case userBaseData
 	case userImage(String)
 	case auth
+	case photos(Int)
+	case like(String, Bool)
 	
 	var URLString: String {
 		switch self {
@@ -23,6 +25,10 @@ enum RequestPath {
 			return Constants.URLs.baseURLString + Constants.APIPaths.userData
 		case .userImage(let userName):
 			return Constants.URLs.baseURLString + Constants.APIPaths.userPublicData + userName
+		case .photos(_):
+			return Constants.URLs.baseURLString + Constants.APIPaths.photos
+		case .like(let id, _):
+			return Constants.URLs.baseURLString + Constants.APIPaths.photos + id + Constants.APIPaths.like
 		}
 	}
 }
@@ -41,6 +47,10 @@ final class RequestsBuilderService {
 			return getUserInformationRequest(urlString: path.URLString)
 		case .auth:
 			return getAuthRequest(urlString: path.URLString)
+		case .photos(let page):
+			return getPhotosAtPageRequest(at:page, urlString: path.URLString)
+		case .like(let id, let isLiked):
+			return getPhotoLikeRequest(for: id, currentState: isLiked, urlString: path.URLString)
 		}
 	}
 	
@@ -87,6 +97,39 @@ final class RequestsBuilderService {
 		}
 		var request = URLRequest(url: url)
 		request.setValue("Bearer \(token)", forHTTPHeaderField: Constants.Token.requestHeader)
+		return request
+	}
+	
+	private func getPhotosAtPageRequest(at page: Int, urlString: String) -> URLRequest? {
+		guard 
+			var urlComponents = URLComponents(string: urlString),
+			let token = tokenStorage.token
+		else {
+			return nil
+		}
+		
+		urlComponents.queryItems = [
+			URLQueryItem(name: "client_id", value: Constants.API.accessKey),
+			URLQueryItem(name: "page", value: page.description),
+			URLQueryItem(name: "per_page", value: 10.description)
+		]
+		
+		guard let url = urlComponents.url else { return nil }
+		var request = URLRequest(url: url)
+		request.setValue("Bearer \(token)", forHTTPHeaderField: Constants.Token.requestHeader)
+		return request
+	}
+	
+	private func getPhotoLikeRequest(for: String, currentState: Bool, urlString: String) -> URLRequest? {
+		guard 
+			let url = URL(string: urlString),
+			let token = tokenStorage.token
+		else {
+			return nil
+		}
+		var request = URLRequest(url: url)
+		request.setValue("Bearer \(token)", forHTTPHeaderField: Constants.Token.requestHeader)
+		request.httpMethod = currentState ? "DELETE" : "POST"
 		return request
 	}
 }

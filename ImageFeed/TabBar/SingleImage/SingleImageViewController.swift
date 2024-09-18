@@ -6,40 +6,105 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-	//MARK: - IBOutlets
-	@IBOutlet private weak var imageView: UIImageView!
-	@IBOutlet weak var scrollView: UIScrollView!
 	
 	//MARK: - Public variables
-	var image: UIImage? {
-		didSet {
-			if let image = image, isViewLoaded {
-				imageView.image = image
-				imageView.frame.size = image.size
-				rescaleAndCenterImage(image: image)
-			}
-		}
-	}
+	var imageURLString: String?
+	
 	//MARK: - Private Variables
+	private var placeholder: UIImageView {
+		let placeholder = UIImageView()
+		placeholder.backgroundColor = .clear
+		placeholder.image = .imageStub
+		placeholder.contentMode = .center
+		UIView.animate(withDuration: 1.5, delay: 0, options: [.repeat, .autoreverse]) {
+			placeholder.tintColor = .clear
+			placeholder.tintColor = .ypWhite
+		}
+		return placeholder
+	}
+	private let imageView: UIImageView = .init()
+	private let scrollView: UIScrollView = .init()
+	private let backButton: UIButton = .init(type: .system)
+	private let shareButton: UIButton = .init(type: .system)
 	private var basicScale: CGFloat = 0
 	
 	//MARK: -Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		scrollView.minimumZoomScale = 0.1
-		scrollView.maximumZoomScale = 1.25
-		
-		if let image = image {
-			imageView.image = image
-			imageView.frame.size = image.size
-			rescaleAndCenterImage(image: image)
-		}
+		view.backgroundColor = .ypBlack
+		setUpSubviews()
+		setLayoutSubviews()
 		addDoubleTapGesture()
 	}
 	
-	//MARK: - Private Methods
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		setImage()
+	}
+	
+	//MARK: - Private UI methods
+	private func setUpSubviews() {
+		view.addSubview(scrollView)
+		setUpScrollView()
+		scrollView.addSubview(imageView)
+		view.addSubview(backButton)
+		setUpBackButton()
+		view.addSubview(shareButton)
+		setUpShareButton()
+	}
+	
+	private func setLayoutSubviews() {
+		backButton.translatesAutoresizingMaskIntoConstraints = false
+		shareButton.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate(
+			[
+				//BackButton
+				backButton.topAnchor.constraint(
+					equalTo: view.topAnchor,
+					constant: Sizes.SingleImageView.BackButton.top
+				),
+				backButton.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.SingleImageView.BackButton.leading
+				),
+				backButton.heightAnchor.constraint(equalToConstant: Sizes.SingleImageView.BackButton.size),
+				backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor),
+				//ShareButton
+				shareButton.heightAnchor.constraint(equalToConstant: Sizes.SingleImageView.ShareButton.size),
+				shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
+				shareButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				shareButton.bottomAnchor.constraint(
+					equalTo: view.bottomAnchor,
+					constant: Sizes.SingleImageView.ShareButton.bottom
+				)
+			]
+		)
+	}
+	
+	private func setUpScrollView() {
+		scrollView.delegate = self
+		scrollView.minimumZoomScale = 0.1
+		scrollView.maximumZoomScale = 1.25
+		scrollView.frame = view.bounds
+	}
+	
+	private func setUpBackButton() {
+		backButton.tintColor = .ypWhite
+		backButton.setImage(.backButton, for: .normal)
+		backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+	}
+	
+	private func setUpShareButton() {
+		shareButton.backgroundColor = .ypBlack
+		shareButton.tintColor = .ypWhite
+		shareButton.setImage(.shareButton, for: .normal)
+		shareButton.layer.cornerRadius = Sizes.SingleImageView.ShareButton.cornerRadius
+		shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+	}
+	
 	private func rescaleAndCenterImage(image: UIImage) {
 		let minZoomScale = scrollView.minimumZoomScale
 		let maxZoomScale = scrollView.maximumZoomScale
@@ -50,6 +115,9 @@ final class SingleImageViewController: UIViewController {
 		basicScale = min(maxZoomScale, max(minZoomScale, min(hScale, vScale)))
 		scrollView.setZoomScale(basicScale, animated: false)
 		scrollView.layoutIfNeeded()
+		let x = (scrollView.contentSize.width - visibleRectSize.width) / 2
+		let y = (scrollView.contentSize.height - visibleRectSize.height) / 2
+		scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
 	}
 	
 	private func addDoubleTapGesture() {
@@ -58,6 +126,26 @@ final class SingleImageViewController: UIViewController {
 		scrollView.addGestureRecognizer(doubleTabGesture)
 	}
 	
+	private func setImage() {
+		if let imageURLString {
+			imageView.frame.size = view.bounds.size
+			imageView.kf.setImage(
+				with: URL(string: imageURLString),
+				placeholder: placeholder
+			) { [weak self] result in
+				guard let self else { preconditionFailure("No SingleImageViewController!!!") }
+				switch result {
+				case .success(let retrievedData):
+					imageView.frame.size = retrievedData.image.size
+					rescaleAndCenterImage(image: retrievedData.image)
+				case .failure(let error):
+					AlertPresenter.showDownloadError(at: self, with: setImage)
+				}
+			}
+		}
+	}
+	
+	//MARK: - Actions
 	@objc private func quickZoom() {
 		if scrollView.zoomScale > basicScale {
 			scrollView.setZoomScale(basicScale, animated: true)
@@ -67,14 +155,13 @@ final class SingleImageViewController: UIViewController {
 		scrollView.layoutIfNeeded()
 	}
 	
-	//MARK: - IBActions
-	@IBAction private func didTapShareButton() {
-		guard let image = image else { return }
+	@objc private func didTapShareButton() {
+		guard let image = imageView.image else { return }
 		let activityView = UIActivityViewController(activityItems: [image], applicationActivities: .none)
 		present(activityView, animated: true)
 	}
 	
-	@IBAction private func didTapBackButton() {
+	@objc private func didTapBackButton() {
 		dismiss(animated: true)
 	}
 }

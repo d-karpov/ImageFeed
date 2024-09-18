@@ -28,14 +28,17 @@ final class ProfileImageService {
 	
 	private init() {}
 	
+	func cleanSavedData() {
+		task = nil
+		profileImageURLString = nil
+	}
+	
 	func fetchProfileImage(userName: String, completion: @escaping(Result<String, Error>) -> Void) {
 		assert(Thread.isMainThread, "\(#function) called not in main thread")
 		guard
 			let request = requestBuilder.madeRequest(for: .userImage(userName)),
 			task == nil
 		else {
-			//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-			print("\(ProfileImageServiceError.invalidRequest.localizedDescription)")
 			completion(.failure(ProfileImageServiceError.invalidRequest))
 			return
 		}
@@ -51,8 +54,6 @@ final class ProfileImageService {
 					guard
 						let profileImageURLString = responseBody.profileImage[Constants.ImageSizes.profileImage]
 					else {
-						//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-						print("\(ProfileImageServiceError.noImageUrl.localizedDescription)")
 						return completion(.failure(ProfileImageServiceError.noImageUrl))
 					}
 					self.profileImageURLString = profileImageURLString
@@ -63,8 +64,6 @@ final class ProfileImageService {
 						userInfo: nil
 					)
 				case .failure(let error):
-					//Принт дублирует вывод ошибки в консоль - добавлен согласно требованиям.
-					print("[\(#fileID)]:[\(#function)] -> \(error.localizedDescription)")
 					completion(.failure(error))
 				}
 			}

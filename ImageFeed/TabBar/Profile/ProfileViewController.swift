@@ -7,13 +7,13 @@
 
 import UIKit
 import Kingfisher
-import SwiftKeychainWrapper
 
 
 final class ProfileViewController: UIViewController {
 	//MARK: - Private variables
 	private let profileService: ProfileService = .shared
 	private let profileImageService: ProfileImageService = .shared
+	private let profileLogoutService: ProfileLogoutService = .shared
 	private var profileImageServiceObserver: NSObjectProtocol?
 	
 	private lazy var profileImage: UIImageView = {
@@ -90,7 +90,10 @@ final class ProfileViewController: UIViewController {
 			return
 		}
 		
-		let processor = RoundCornerImageProcessor(cornerRadius: Sizes.ProfileImage.cornerRadius, backgroundColor: .ypBlack)
+		let processor = RoundCornerImageProcessor(
+			cornerRadius: Sizes.ProfileView.ProfileImage.cornerRadius,
+			backgroundColor: .ypBlack
+		)
 		
 		profileImage.kf.setImage(
 			with: url,
@@ -100,7 +103,14 @@ final class ProfileViewController: UIViewController {
 	}
 	@objc
 	private func logout() {
-		KeychainWrapper.standard.removeAllKeys()
+		AlertPresenter.logout(at: self) { [weak self] in
+			guard let self else { preconditionFailure("No ProfileViewController!!") }
+			profileLogoutService.logOut()
+			let splashView = SplashViewController()
+			splashView.modalPresentationStyle = .fullScreen
+			dismiss(animated: true)
+			present(splashView, animated: true)
+		}
 	}
 	
 	private func setUpSubViews() {
@@ -127,10 +137,16 @@ final class ProfileViewController: UIViewController {
 	private func setUpConstraintsProfileImage() {
 		NSLayoutConstraint.activate(
 			[
-				profileImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.leading),
-				profileImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Sizes.top),
-				profileImage.heightAnchor.constraint(equalToConstant: Sizes.ProfileImage.size),
-				profileImage.widthAnchor.constraint(equalToConstant: Sizes.ProfileImage.size)
+				profileImage.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.ProfileView.ProfileImage.leading
+				),
+				profileImage.topAnchor.constraint(
+					equalTo: view.safeAreaLayoutGuide.topAnchor,
+					constant: Sizes.ProfileView.ProfileImage.top
+				),
+				profileImage.heightAnchor.constraint(equalToConstant: Sizes.ProfileView.ProfileImage.size),
+				profileImage.widthAnchor.constraint(equalToConstant: Sizes.ProfileView.ProfileImage.size)
 			]
 		)
 	}
@@ -138,10 +154,16 @@ final class ProfileViewController: UIViewController {
 	private func setUpConstraintsExitButton() {
 		NSLayoutConstraint.activate(
 			[
-				exitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Sizes.ExitButton.trailing),
-				exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Sizes.ExitButton.top),
-				exitButton.heightAnchor.constraint(equalToConstant: Sizes.ExitButton.size),
-				exitButton.widthAnchor.constraint(equalToConstant: Sizes.ExitButton.size)
+				exitButton.trailingAnchor.constraint(
+					equalTo: view.trailingAnchor,
+					constant: Sizes.ProfileView.ExitButton.trailing
+				),
+				exitButton.topAnchor.constraint(
+					equalTo: view.safeAreaLayoutGuide.topAnchor,
+					constant: Sizes.ProfileView.ExitButton.top
+				),
+				exitButton.heightAnchor.constraint(equalToConstant: Sizes.ProfileView.ExitButton.size),
+				exitButton.widthAnchor.constraint(equalToConstant: Sizes.ProfileView.ExitButton.size)
 			]
 		)
 	}
@@ -149,9 +171,18 @@ final class ProfileViewController: UIViewController {
 	private func setUpConstraintsNameLabel() {
 		NSLayoutConstraint.activate(
 			[
-				nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.leading),
-				nameLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: Sizes.spacing),
-				nameLabel.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: Sizes.trailing)
+				nameLabel.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.ProfileView.Label.leading
+				),
+				nameLabel.topAnchor.constraint(
+					equalTo: profileImage.bottomAnchor,
+					constant: Sizes.ProfileView.Label.spacing
+				),
+				nameLabel.trailingAnchor.constraint(
+					greaterThanOrEqualTo: view.trailingAnchor,
+					constant: Sizes.ProfileView.Label.trailing
+				)
 			]
 		)
 	}
@@ -159,9 +190,18 @@ final class ProfileViewController: UIViewController {
 	private func setUpConstraintsNickLabel() {
 		NSLayoutConstraint.activate(
 			[
-				loginLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.leading),
-				loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Sizes.spacing),
-				loginLabel.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: Sizes.trailing)
+				loginLabel.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.ProfileView.Label.leading
+				),
+				loginLabel.topAnchor.constraint(
+					equalTo: nameLabel.bottomAnchor,
+					constant: Sizes.ProfileView.Label.spacing
+				),
+				loginLabel.trailingAnchor.constraint(
+					greaterThanOrEqualTo: view.trailingAnchor,
+					constant: Sizes.ProfileView.Label.trailing
+				)
 			]
 		)
 	}
@@ -169,9 +209,18 @@ final class ProfileViewController: UIViewController {
 	private func setUpConstraintsInfoLabel() {
 		NSLayoutConstraint.activate(
 			[
-				infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.leading),
-				infoLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: Sizes.spacing),
-				infoLabel.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: Sizes.trailing)
+				infoLabel.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.ProfileView.Label.leading
+				),
+				infoLabel.topAnchor.constraint(
+					equalTo: loginLabel.bottomAnchor,
+					constant: Sizes.ProfileView.Label.spacing
+				),
+				infoLabel.trailingAnchor.constraint(
+					greaterThanOrEqualTo: view.trailingAnchor,
+					constant: Sizes.ProfileView.Label.trailing
+				)
 			]
 		)
 	}
