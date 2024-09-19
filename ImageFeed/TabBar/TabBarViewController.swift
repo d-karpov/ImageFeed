@@ -19,14 +19,20 @@ final class TabBarViewController: UITabBarController {
 			image: .mainTab,
 			selectedImage: .none
 		)
-		
+		let profileViewController = assemblyProfileViewController()
+		viewControllers = [imagesListViewController, profileViewController]
+	}
+	
+	private func assemblyProfileViewController() -> ProfileViewController {
 		let profileViewController = ProfileViewController()
+		let presenter = ProfileViewPresenter()
+		presenter.view = profileViewController
+		profileViewController.presenter = presenter
 		profileViewController.tabBarItem = UITabBarItem(
 			title: .none,
 			image: .profileTab,
 			selectedImage: .none
 		)
-		
-		viewControllers = [imagesListViewController, profileViewController]
+		return profileViewController
 	}
 }

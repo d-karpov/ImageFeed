@@ -26,6 +26,7 @@
 		D32ACF942C9C303D007C83C1 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32ACF932C9C303D007C83C1 /* WebViewPresenter.swift */; };
 		D32ACF962C9C441A007C83C1 /* AuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32ACF952C9C441A007C83C1 /* AuthConfiguration.swift */; };
 		D32ACF982C9C4CB5007C83C1 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32ACF972C9C4CB5007C83C1 /* AuthHelper.swift */; };
+		D32ACFAD2C9C706D007C83C1 /* ProfileViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32ACFAC2C9C706D007C83C1 /* ProfileViewPresenter.swift */; };
 		D32F243E2C722B580009894E /* UserResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32F243D2C722B580009894E /* UserResponseBody.swift */; };
 		D32F24402C7237250009894E /* RequestsBuilderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32F243F2C7237250009894E /* RequestsBuilderService.swift */; };
 		D33B5BB92C73738500C5BB91 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33B5BB82C73738500C5BB91 /* AlertPresenter.swift */; };
@@ -82,6 +83,7 @@
 		D32ACF952C9C441A007C83C1 /* AuthConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthConfiguration.swift; sourceTree = "<group>"; };
 		D32ACF972C9C4CB5007C83C1 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		D32ACF9D2C9C5141007C83C1 /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32ACFAC2C9C706D007C83C1 /* ProfileViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPresenter.swift; sourceTree = "<group>"; };
 		D32F243D2C722B580009894E /* UserResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponseBody.swift; sourceTree = "<group>"; };
 		D32F243F2C7237250009894E /* RequestsBuilderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsBuilderService.swift; sourceTree = "<group>"; };
 		D33B5BB82C73738500C5BB91 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				D3CE9D1D2C3ECD0C00FA98A0 /* ProfileViewController.swift */,
+				D32ACFAC2C9C706D007C83C1 /* ProfileViewPresenter.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 				D32F24402C7237250009894E /* RequestsBuilderService.swift in Sources */,
 				D37A53512C52691500F98CE5 /* Constants.swift in Sources */,
 				D32ACF942C9C303D007C83C1 /* WebViewPresenter.swift in Sources */,
+				D32ACFAD2C9C706D007C83C1 /* ProfileViewPresenter.swift in Sources */,
 				D33B5BB92C73738500C5BB91 /* AlertPresenter.swift in Sources */,
 				D30E64B22C91D6B800102627 /* PhotosResponseBody.swift in Sources */,
 				D31399082C38A9CA0056A6F7 /* ImagesListCell.swift in Sources */,
