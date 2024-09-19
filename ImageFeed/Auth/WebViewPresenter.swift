@@ -17,10 +17,14 @@ protocol WebViewPresenterProtocol: AnyObject {
 
 final class WebViewPresenter: WebViewPresenterProtocol {
 	weak var view: WebViewViewControllerProtocol?
-	private let requestBuilder: RequestsBuilderService = .shared
+	private let authHelper: AuthHelperProtocol
+	
+	init(authHelper: AuthHelperProtocol) {
+		self.authHelper = authHelper
+	}
 	
 	func viewDidLoad() {
-		if let request = requestBuilder.madeRequest(for: .auth) {
+		if let request = authHelper.authRequest() {
 			view?.load(request: request)
 		} else {
 			preconditionFailure("Wrong Auth request! \(#function) line - \(#line)")
@@ -32,20 +36,10 @@ final class WebViewPresenter: WebViewPresenterProtocol {
 		let shouldHideProgress = abs(newProgressValue - 1.0) <= 0.0001
 		view?.setProgressValue(shouldHideProgress ? 0 : newProgressValue)
 		view?.setProgressHidden(shouldHideProgress)
-		
 	}
 	
 	func code(from url: URL) -> String? {
-		if
-			let urlComponents = URLComponents(string: url.absoluteString),
-			urlComponents.path == "/oauth/authorize/native",
-			let item = urlComponents.queryItems,
-			let codeItem = item.first(where: { $0.name == "code"} )
-		{
-			return codeItem.value
-		} else {
-			return .none
-		}
+		authHelper.code(from: url)
 	}
 }
 

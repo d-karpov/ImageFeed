@@ -88,7 +88,7 @@ final class AuthViewController: UIViewController {
 	}
 	
 	@objc private func didTapedLogInButton() {
-		let presenter = WebViewPresenter()
+		let presenter = WebViewPresenter(authHelper: AuthHelper())
 		let webView = WebViewViewController()
 		webView.presenter = presenter
 		webView.delegate = self
