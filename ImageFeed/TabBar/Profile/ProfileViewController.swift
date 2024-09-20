@@ -66,6 +66,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 		presenter?.viewDidLoad()
 	}
 	
+	//MARK: - ProfileViewControllerProtocol Implementation
 	func setName(_ name: String) {
 		nameLabel.text = name
 	}
