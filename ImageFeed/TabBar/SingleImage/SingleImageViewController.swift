@@ -93,6 +93,7 @@ final class SingleImageViewController: UIViewController {
 	
 	private func setUpBackButton() {
 		backButton.tintColor = .ypWhite
+		backButton.accessibilityIdentifier = UIElementsIdentifiers.backButton
 		backButton.setImage(.backButton, for: .normal)
 		backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
 	}

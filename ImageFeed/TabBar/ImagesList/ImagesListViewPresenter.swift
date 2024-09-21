@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ImagesListViewPresenterProtocol: AnyObject {
-	var view: ImageListViewControllerProtocol? { get set }
+	var view: ImagesListViewControllerProtocol? { get set }
 	func viewDidLoad()
 	func setNumberOfRows() -> Int
 	func getImageSize(at indexPath: IndexPath) -> CGSize?
@@ -18,7 +18,7 @@ protocol ImagesListViewPresenterProtocol: AnyObject {
 }
 
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
-	weak var view: ImageListViewControllerProtocol?
+	weak var view: ImagesListViewControllerProtocol?
 	
 	private let photosService: ImageListService = .init()
 	private var imageListServiceObserver: NSObjectProtocol?
@@ -46,7 +46,6 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
 	func getImageSize(at indexPath: IndexPath) -> CGSize? {
 		guard let image = photosService.photos[safe: indexPath.row] else { return nil }
 		return image.size
-		
 	}
 	
 	func configureCell(for cell: ImagesListCell, with indexPath: IndexPath) {
@@ -79,7 +78,7 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
 	}
 	
 	func fetchNextPage(_ currentRow: Int) {
-		if currentRow == photosService.photos.count - 1 {
+		if currentRow == photosService.photos.count - 1 && ProcessInfo().environment["isUITesting"] == "NO" {
 			photosService.fetchPhotosNextPage()
 		}
 	}

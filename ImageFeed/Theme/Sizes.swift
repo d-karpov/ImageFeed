@@ -42,7 +42,7 @@ enum Sizes {
 	
 	enum ImageCell {
 		enum LikeButton {
-			static let size: CGFloat = 42
+			static let size: CGFloat = 44
 		}
 		
 		enum GradientView {

@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol ImageListViewControllerProtocol: AnyObject {
+protocol ImagesListViewControllerProtocol: AnyObject {
 	var presenter: ImagesListViewPresenterProtocol? { get set }
 	func indexPathForCell(_ cell: UITableViewCell) -> IndexPath?
 	func updateTableViewAnimated(with indexPaths: [IndexPath])
 	func present(_ viewController: UIViewController)
 }
 
-final class ImagesListViewController: UITableViewController, ImageListViewControllerProtocol {
+final class ImagesListViewController: UITableViewController, ImagesListViewControllerProtocol {
 	var presenter: ImagesListViewPresenterProtocol?
 	
 	//MARK: Lifecycle

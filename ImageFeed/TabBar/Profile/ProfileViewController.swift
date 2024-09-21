@@ -23,6 +23,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 	//MARK: - Private variables
 	private lazy var profileImage: UIImageView = {
 		let imageView = UIImageView()
+		imageView.accessibilityIdentifier = UIElementsIdentifiers.profileImage
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		imageView.tintColor = .ypGray
 		return imageView
@@ -31,6 +32,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 	private lazy var exitButton: UIButton = {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
+		button.accessibilityIdentifier = UIElementsIdentifiers.logoutButton
 		button.setImage(UIImage(named: "Exit"), for: .normal)
 		button.addTarget(self, action: #selector(logout), for: .touchUpInside)
 		return button
@@ -38,6 +40,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 	
 	private lazy var nameLabel: UILabel = {
 		let label = makeLabel(with: "Екатерина Новикова")
+		label.accessibilityIdentifier = UIElementsIdentifiers.nameLabel
 		label.font = Fonts.bold23
 		label.textColor = .ypWhite
 		return label
@@ -45,6 +48,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 	
 	private lazy var loginLabel: UILabel = {
 		let label = makeLabel(with: "@ekaterina_nov")
+		label.accessibilityIdentifier = UIElementsIdentifiers.loginLabel
 		label.font = Fonts.regular13
 		label.textColor = .ypGray
 		return label
@@ -52,6 +56,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 	
 	private lazy var infoLabel: UILabel = {
 		let label = makeLabel(with: "")
+		label.accessibilityIdentifier = UIElementsIdentifiers.infoLabel
 		label.font = Fonts.regular13
 		label.textColor = .ypWhite
 		return label

@@ -12,7 +12,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-	private let logInButton: UIButton = .init(type: .system)
+	private let loginButton: UIButton = .init(type: .system)
 	private let logoView: UIImageView = .init(image: .unsplashLogo)
 	private let oAuth2Service = OAuth2Service.shared
 	private let oAuth2Storage = OAuth2TokenStorageService.shared
@@ -33,7 +33,7 @@ final class AuthViewController: UIViewController {
 	private func setUpSubViews() {
 		[
 			logoView,
-			logInButton
+			loginButton
 		].forEach { subView in
 			view.addSubview(subView)
 		}
@@ -41,23 +41,23 @@ final class AuthViewController: UIViewController {
 	
 	private func setLayoutSubviews() {
 		logoView.translatesAutoresizingMaskIntoConstraints = false
-		logInButton.translatesAutoresizingMaskIntoConstraints = false
+		loginButton.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate(
 			[
 				logoView.heightAnchor.constraint(equalToConstant: Sizes.AuthView.LogoView.size),
 				logoView.widthAnchor.constraint(equalTo: logoView.heightAnchor),
 				logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 				logoView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-				logInButton.heightAnchor.constraint(equalToConstant: Sizes.AuthView.LogInButton.height),
-				logInButton.leadingAnchor.constraint(
+				loginButton.heightAnchor.constraint(equalToConstant: Sizes.AuthView.LogInButton.height),
+				loginButton.leadingAnchor.constraint(
 					equalTo: view.leadingAnchor,
 					constant: Sizes.AuthView.LogInButton.leading
 				),
-				logInButton.trailingAnchor.constraint(
+				loginButton.trailingAnchor.constraint(
 					equalTo: view.trailingAnchor,
 					constant: Sizes.AuthView.LogInButton.trailing
 				),
-				logInButton.bottomAnchor.constraint(
+				loginButton.bottomAnchor.constraint(
 					equalTo: view.bottomAnchor,
 					constant: Sizes.AuthView.LogInButton.bottom
 				)
@@ -79,12 +79,13 @@ final class AuthViewController: UIViewController {
 	}
 	
 	private func configureLogInButton() {
-		logInButton.setTitle("Войти", for: .normal)
-		logInButton.titleLabel?.font = Fonts.bold17
-		logInButton.tintColor = .ypBlack
-		logInButton.backgroundColor = .ypWhite
-		logInButton.layer.cornerRadius = Sizes.AuthView.LogInButton.cornerRadius
-		logInButton.addTarget(self, action: #selector(didTapedLogInButton), for: .touchUpInside)
+		loginButton.accessibilityIdentifier = UIElementsIdentifiers.loginButton
+		loginButton.setTitle("Войти", for: .normal)
+		loginButton.titleLabel?.font = Fonts.bold17
+		loginButton.tintColor = .ypBlack
+		loginButton.backgroundColor = .ypWhite
+		loginButton.layer.cornerRadius = Sizes.AuthView.LogInButton.cornerRadius
+		loginButton.addTarget(self, action: #selector(didTapedLogInButton), for: .touchUpInside)
 	}
 	
 	@objc private func didTapedLogInButton() {

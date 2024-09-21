@@ -34,6 +34,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
 		setUpSubViews()
 		setLayoutSubviews()
 		webView.navigationDelegate = self
+		webView.accessibilityIdentifier = UIElementsIdentifiers.webView
 		estimatedProgressObservation = webView.observe(
 			\.estimatedProgress,
 			changeHandler: { [weak self] _,_ in
