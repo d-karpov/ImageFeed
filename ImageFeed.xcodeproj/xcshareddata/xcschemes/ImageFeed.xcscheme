@@ -29,15 +29,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
-      <PreActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "killall Simulator&#10;defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false&#10;">
-            </ActionContent>
-         </ExecutionAction>
-      </PreActions>
       <Testables>
          <TestableReference
             skipped = "NO"
@@ -51,8 +42,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
+            skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D332F3E52C9DC621008799C0"

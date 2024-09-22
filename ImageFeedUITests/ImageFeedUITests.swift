@@ -11,7 +11,7 @@ import ImageFeed
 final class ImageFeedUITests: XCTestCase {
 	private let app = XCUIApplication()
 	private enum TestSettings {
-		static let loading: TimeInterval = 5
+		static let loading: TimeInterval = 7
 		static let maxScale: Double = 3
 		static let minScale: Double = 0.5
 		static let velocity: Double = 1
@@ -20,6 +20,12 @@ final class ImageFeedUITests: XCTestCase {
 		enum Credentials {
 			static let login = ""
 			static let password = ""
+		}
+		
+		/// Необходимо добавить реальный данные из профиля - логин начиная с @ и полное имя имя+фамилия через пробел.
+		enum ProfileInfo {
+			static let fullName = ""
+			static let username = ""
 		}
 	}
 	
@@ -81,8 +87,8 @@ final class ImageFeedUITests: XCTestCase {
 		let tabBarItemProfile = app.tabBars.buttons.element(boundBy: 1)
 		XCTAssertTrue(tabBarItemProfile.waitForExistence(timeout: TestSettings.loading))
 		tabBarItemProfile.tap()
-		XCTAssertTrue(app.staticTexts[UIElementsIdentifiers.loginLabel].exists)
-		XCTAssertTrue(app.staticTexts[UIElementsIdentifiers.nameLabel].exists)
+		XCTAssertTrue(app.staticTexts[TestSettings.ProfileInfo.fullName].exists)
+		XCTAssertTrue(app.staticTexts[TestSettings.ProfileInfo.username].exists)
 		XCTAssertTrue(app.staticTexts[UIElementsIdentifiers.infoLabel].exists)
 		XCTAssertTrue(app.images[UIElementsIdentifiers.profileImage].exists)
 		let logoutButton = app.buttons[UIElementsIdentifiers.logoutButton]

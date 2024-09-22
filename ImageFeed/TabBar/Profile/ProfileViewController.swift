@@ -40,7 +40,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 	
 	private lazy var nameLabel: UILabel = {
 		let label = makeLabel(with: "Екатерина Новикова")
-		label.accessibilityIdentifier = UIElementsIdentifiers.nameLabel
 		label.font = Fonts.bold23
 		label.textColor = .ypWhite
 		return label
@@ -48,7 +47,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
 	
 	private lazy var loginLabel: UILabel = {
 		let label = makeLabel(with: "@ekaterina_nov")
-		label.accessibilityIdentifier = UIElementsIdentifiers.loginLabel
 		label.font = Fonts.regular13
 		label.textColor = .ypGray
 		return label

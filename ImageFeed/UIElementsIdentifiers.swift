@@ -17,8 +17,6 @@ enum UIElementsIdentifiers {
 	static let logoutButton: String = "Logout"
 	static let logoutTitle: String = "Пока, пока!"
 	static let yesButton: String = "Да"
-	static let nameLabel: String = "NameLabel"
-	static let loginLabel: String = "LoginLabel"
 	static let infoLabel: String = "InfoLabel"
 	static let profileImage: String = "ProfileImage"
 }
