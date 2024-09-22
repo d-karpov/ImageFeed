@@ -15,13 +15,11 @@ protocol ProfileViewPresenterProtocol: AnyObject {
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
 	weak var view: ProfileViewControllerProtocol?
-	
-	private let profileService: ProfileService = .shared
-	private let profileImageService: ProfileImageService = .shared
-	private let profileLogoutService: ProfileLogoutService = .shared
 	private var profileImageServiceObserver: NSObjectProtocol?
+	private var profileHelper: ProfileHelperProtocol?
 	
-	init() {
+	init(profileHelper: ProfileHelperProtocol) {
+		self.profileHelper = profileHelper
 		profileImageServiceObserver = NotificationCenter.default.addObserver(
 			forName: ProfileImageService.didChangeNotification,
 			object: nil,
@@ -39,25 +37,20 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
 	}
 	
 	func logout() {
-		profileLogoutService.logOut()
+		profileHelper?.logOut()
 		let splashView = SplashViewController()
 		splashView.modalPresentationStyle = .fullScreen
 		view?.present(splashView)
 	}
 	
 	private func updateProfileImage() {
-		guard
-			let profileImageURLString = profileImageService.profileImageURLString,
-			let url = URL(string: profileImageURLString)
-		else {
-			print("[\(#fileID)]:[\(#function)] -> " + ProfileImageServiceError.noImageUrl.localizedDescription)
-			return
+		if let url = profileHelper?.getProfileImageUrl() {
+			view?.setProfileImage(from: url)
 		}
-		view?.setProfileImage(from: url)
 	}
 	
 	private func updateProfileDetails() {
-		guard let profile = profileService.profile else { return }
+		guard let profile = profileHelper?.getProfile() else { return }
 		view?.setName(profile.name)
 		view?.setLogin(profile.loginName)
 		if let info = profile.bio {
