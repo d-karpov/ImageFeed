@@ -11,14 +11,11 @@ enum RequestPath {
 	case token(String)
 	case userBaseData
 	case userImage(String)
-	case auth
 	case photos(Int)
 	case like(String, Bool)
 	
 	var URLString: String {
 		switch self {
-		case .auth:
-			return Constants.URLs.authorizeURLString
 		case .token(_):
 			return Constants.Token.baseURLString
 		case .userBaseData:
@@ -45,8 +42,6 @@ final class RequestsBuilderService {
 			return getTokenURLRequest(code: code, urlString: path.URLString)
 		case .userBaseData, .userImage(_):
 			return getUserInformationRequest(urlString: path.URLString)
-		case .auth:
-			return getAuthRequest(urlString: path.URLString)
 		case .photos(let page):
 			return getPhotosAtPageRequest(at:page, urlString: path.URLString)
 		case .like(let id, let isLiked):
@@ -55,20 +50,6 @@ final class RequestsBuilderService {
 	}
 	
 	//MARK: Private Methods
-	private func getAuthRequest(urlString: String) -> URLRequest? {
-		guard var urlComponents = URLComponents(string: urlString) else { return nil }
-		
-		urlComponents.queryItems = [
-			URLQueryItem(name: "client_id", value: Constants.API.accessKey),
-			URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
-			URLQueryItem(name: "response_type", value: "code"),
-			URLQueryItem(name: "scope", value: Constants.API.accessScope),
-		]
-		
-		guard let url = urlComponents.url else { return nil }
-		return URLRequest(url: url)
-	}
-	
 	private func getTokenURLRequest(code: String, urlString: String) -> URLRequest? {
 		guard var urlComponents = URLComponents(string: urlString) else { return nil }
 		

@@ -93,6 +93,7 @@ final class SingleImageViewController: UIViewController {
 	
 	private func setUpBackButton() {
 		backButton.tintColor = .ypWhite
+		backButton.accessibilityIdentifier = UIElementsIdentifiers.backButton
 		backButton.setImage(.backButton, for: .normal)
 		backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
 	}
@@ -138,7 +139,7 @@ final class SingleImageViewController: UIViewController {
 				case .success(let retrievedData):
 					imageView.frame.size = retrievedData.image.size
 					rescaleAndCenterImage(image: retrievedData.image)
-				case .failure(let error):
+				case .failure(_):
 					AlertPresenter.showDownloadError(at: self, with: setImage)
 				}
 			}

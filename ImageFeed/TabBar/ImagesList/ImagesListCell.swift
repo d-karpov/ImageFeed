@@ -96,6 +96,7 @@ final class ImagesListCell: UITableViewCell {
 	}
 	
 	func setLikeImage(isLike: Bool) {
+		likeButton.accessibilityIdentifier = isLike ? UIElementsIdentifiers.likeButtonOff : UIElementsIdentifiers.likeButtonOn
 		likeButton.setImage(isLike ? .activeLike : .noActiveLike, for: .normal)
 	}
 	

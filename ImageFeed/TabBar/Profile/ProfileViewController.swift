@@ -9,15 +9,21 @@ import UIKit
 import Kingfisher
 
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+	var presenter: ProfileViewPresenterProtocol? { get set }
+	func setProfileImage(from url: URL)
+	func setName(_ name: String)
+	func setLogin(_ login: String)
+	func setInfo(_ info: String)
+	func present(_ viewController: UIViewController)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+	var presenter: ProfileViewPresenterProtocol?
 	//MARK: - Private variables
-	private let profileService: ProfileService = .shared
-	private let profileImageService: ProfileImageService = .shared
-	private let profileLogoutService: ProfileLogoutService = .shared
-	private var profileImageServiceObserver: NSObjectProtocol?
-	
 	private lazy var profileImage: UIImageView = {
 		let imageView = UIImageView()
+		imageView.accessibilityIdentifier = UIElementsIdentifiers.profileImage
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		imageView.tintColor = .ypGray
 		return imageView
@@ -26,6 +32,7 @@ final class ProfileViewController: UIViewController {
 	private lazy var exitButton: UIButton = {
 		let button = UIButton()
 		button.translatesAutoresizingMaskIntoConstraints = false
+		button.accessibilityIdentifier = UIElementsIdentifiers.logoutButton
 		button.setImage(UIImage(named: "Exit"), for: .normal)
 		button.addTarget(self, action: #selector(logout), for: .touchUpInside)
 		return button
@@ -47,6 +54,7 @@ final class ProfileViewController: UIViewController {
 	
 	private lazy var infoLabel: UILabel = {
 		let label = makeLabel(with: "")
+		label.accessibilityIdentifier = UIElementsIdentifiers.infoLabel
 		label.font = Fonts.regular13
 		label.textColor = .ypWhite
 		return label
@@ -58,38 +66,28 @@ final class ProfileViewController: UIViewController {
 		view.backgroundColor = .ypBlack
 		setUpSubViews()
 		setLayoutSubviews()
-		updateProfileDetails(profile: profileService.profile)
-		
-		profileImageServiceObserver = NotificationCenter.default.addObserver(
-			forName: ProfileImageService.didChangeNotification,
-			object: nil,
-			queue: .main,
-			using: { [weak self] _ in
-				guard let self else { return }
-				self.updateAvatar()
-			}
-		)
-		updateAvatar()
+		presenter?.viewDidLoad()
 	}
 	
-	//MARK: - Private methods
-	private func updateProfileDetails(profile: Profile?) {
-		if let profile {
-			self.nameLabel.text = profile.name
-			self.loginLabel.text = profile.loginName
-			self.infoLabel.text = profile.bio
-		}
+	//MARK: - ProfileViewControllerProtocol Implementation
+	func setName(_ name: String) {
+		nameLabel.text = name
 	}
 	
-	private func updateAvatar() {
-		guard
-			let profileImageURLString = profileImageService.profileImageURLString,
-			let url = URL(string: profileImageURLString)
-		else {
-			print("[\(#fileID)]:[\(#function)] -> " + ProfileImageServiceError.noImageUrl.localizedDescription)
-			return
-		}
-		
+	func setLogin(_ login: String) {
+		loginLabel.text = login
+	}
+	
+	func setInfo(_ info: String) {
+		infoLabel.text = info
+	}
+	
+	func present(_ viewController: UIViewController) {
+		dismiss(animated: true)
+		present(viewController, animated: true)
+	}
+	
+	func setProfileImage(from url: URL) {
 		let processor = RoundCornerImageProcessor(
 			cornerRadius: Sizes.ProfileView.ProfileImage.cornerRadius,
 			backgroundColor: .ypBlack
@@ -101,15 +99,13 @@ final class ProfileViewController: UIViewController {
 			options: [.processor(processor)]
 		)
 	}
+	
+	//MARK: - Private methods
 	@objc
 	private func logout() {
 		AlertPresenter.logout(at: self) { [weak self] in
-			guard let self else { preconditionFailure("No ProfileViewController!!") }
-			profileLogoutService.logOut()
-			let splashView = SplashViewController()
-			splashView.modalPresentationStyle = .fullScreen
-			dismiss(animated: true)
-			present(splashView, animated: true)
+			guard let self else { return }
+			presenter?.logout()
 		}
 	}
 	

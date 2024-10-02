@@ -8,16 +8,22 @@
 import UIKit
 import WebKit
 
+protocol WebViewViewControllerProtocol: AnyObject {
+	var presenter: WebViewPresenterProtocol? { get set }
+	func load(request: URLRequest)
+	func setProgressValue(_ newValue: Float)
+	func setProgressHidden(_ isHidden: Bool)
+}
+
 protocol WebViewViewControllerDelegate: AnyObject {
 	func webViewViewController(_ viewController: WebViewViewController, didAuthenticateWithCode code: String)
 }
 
-final class WebViewViewController: UIViewController {
+final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
 	private let webView: WKWebView = .init()
 	private let progressView: UIProgressView = .init(progressViewStyle: .bar)
-	private let requestBuilder: RequestsBuilderService = .shared
 	private var estimatedProgressObservation: NSKeyValueObservation?
-	
+	var presenter: WebViewPresenterProtocol?
 	weak var delegate: WebViewViewControllerDelegate?
 	
 	//MARK: Lifecycle
@@ -28,15 +34,16 @@ final class WebViewViewController: UIViewController {
 		setUpSubViews()
 		setLayoutSubviews()
 		webView.navigationDelegate = self
+		webView.accessibilityIdentifier = UIElementsIdentifiers.webView
 		estimatedProgressObservation = webView.observe(
 			\.estimatedProgress,
 			changeHandler: { [weak self] _,_ in
 				if let self {
-					self.updateProgress()
+					presenter?.didUpdateProgress(webView.estimatedProgress)
 				}
 			}
 		)
-		loadAuthView()
+		presenter?.viewDidLoad()
 	}
 	
 	//MARK: - Private UI methods
@@ -66,19 +73,16 @@ final class WebViewViewController: UIViewController {
 		)
 	}
 	
-	//MARK: Private Methods
-	private func updateProgress() {
-		let status = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-		progressView.setProgress( status ? 0 : Float(webView.estimatedProgress), animated: true)
-		progressView.isHidden = status
+	func load(request: URLRequest) {
+		webView.load(request)
 	}
 	
-	private func loadAuthView() {
-		if let request = requestBuilder.madeRequest(for: .auth) {
-			webView.load(request)
-		} else {
-			preconditionFailure("Wrong Auth request! \(#function) line - \(#line)")
-		}
+	func setProgressValue(_ newValue: Float) {
+		progressView.setProgress(newValue, animated: true)
+	}
+	
+	func setProgressHidden(_ isHidden: Bool) {
+		progressView.isHidden = isHidden
 	}
 }
 
@@ -98,14 +102,8 @@ extension WebViewViewController: WKNavigationDelegate {
 	}
 	
 	private func code(from navigationAction: WKNavigationAction ) -> String? {
-		if
-			let url = navigationAction.request.url,
-			let urlComponents = URLComponents(string: url.absoluteString),
-			urlComponents.path == "/oauth/authorize/native",
-			let item = urlComponents.queryItems,
-			let codeItem = item.first(where: { $0.name == "code"} )
-		{
-			return codeItem.value
+		if let url = navigationAction.request.url {
+			return presenter?.code(from: url)
 		} else {
 			return .none
 		}

@@ -22,7 +22,7 @@ final class ImageListService {
 	
 	private let requestBuilder: RequestsBuilderService = .shared
 	private let dataFormatter = ISO8601DateFormatter()
-	private (set) var photos: [Photo] = []
+	private(set) var photos: [Photo] = []
 	private var currentPage = 0
 	private var task: URLSessionTask?
 	
